@@ -118,6 +118,7 @@ def check_syntax_error(instructionAddress, instruction, debugLines, instructionN
         addressNested = newAddress
         if to in labels:
             offest = labels[to] - instructionAddress - 1
+            print("hi: ",offest)
         else:
             for i in range(instructionNum+1, len(instructions)):
                 operationNested = (instructions[i][1].split())[0].lower()
@@ -250,7 +251,7 @@ def compile_code(lines, debug):
     debug.writelines(
         "----------------------------- START INSTUCTION INFORMATION LIST -----------------------------\n")
     for debugLine in debugLines:
-        debug.writelines("(instruction = {}) (instruction type = {}) (address in hex = {}) (instruction code = {})\n".format(debugLine[0],debugLine[1],hex(debugLine[2])[2:].zfill(3),debugLine[3]))
+        debug.writelines("(instruction = {}) (instruction type = {}) (address in hex = {}) (instruction code = {})\n".format(debugLine[0],debugLine[1],hex(debugLine[2]).zfill(3),debugLine[3]))
     debug.writelines(
         "----------------------------- END INSTUCTION INFORMATION LIST -------------------------------\n")
     # check if there is a Syntax Error:
