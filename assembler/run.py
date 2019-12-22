@@ -114,30 +114,30 @@ def check_syntax_error(instructionAddress, instruction, debugLines, instructionN
             raise ValueError('Syntax Error: ', instruction)
     elif operation in branchOp:
         to = (instruction.split())[1].lower()
-        offest = 0
+        offest = -1
         addressNested = newAddress
         if to in labels:
-            offest = labels[to] - instructionAddress
+            offest = labels[to] - instructionAddress - 1
         else:
             for i in range(instructionNum+1, len(instructions)):
                 operationNested = (instructions[i][1].split())[0].lower()
                 flag = re.match(
                     hexaNum, instructions[i][1], flags=0) or operationNested in oneOp or operationNested in branchOp or operationNested in twoOp or operationNested in noOp
                 if to+":" == instructions[i][1].replace(" ", "").lower():
-                    offest = addressNested - newAddress + 1
+                    offest = addressNested - newAddress
                     break
                 elif(re.match(org, instructions[i][1], flags=0)):
                     addressNested = int((instructions[i][1].split())[1], bitsNum)
                 elif(flag):
                     addressNested += 1
-        if(offest == 0):
+        if(offest == -1):
             raise ValueError('Syntax Error: ', instruction)
 
-        offestCode = bin(abs(offest))[2:].zfill(6)
-        if(offest > 0):
+        offestCode = bin(abs(offest))[2:].zfill(8)
+        if(offest > -1):
             code = branchOp[operation] + offestCode
         else:
-            code = branchOp[operation] + bin(offest+(1<<6))[2:]
+            code = branchOp[operation] + bin(offest+(1<<8))[2:]
         if(len(code) == bitsNum):
             debugLines.append((instruction, "1op", instructionAddress, code))
         else:
