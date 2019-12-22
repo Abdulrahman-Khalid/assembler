@@ -1,7 +1,8 @@
+# TO TRY CODE:
+# python run.py (directory of files) (code file .asm file) (memory I want to write the code in file .mem) (debug file which has some visual data .txt)
+# e.g: python run.py ./ test.asm  out.mem debug.txt
 import sys
 import re
-import tqdm
-
 oneOp = {}
 branchOp = {}
 twoOp = {}
