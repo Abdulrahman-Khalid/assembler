@@ -3,6 +3,7 @@
 # e.g: python run.py ./ test.asm  out.mem debug.txt
 import sys
 import re
+bitsNum = 16
 oneOp = {}
 branchOp = {}
 twoOp = {}
@@ -14,7 +15,7 @@ variables = {}  # have key => variable name, value => address of value of the va
 
 def over_write_memory(memoryTuples, outputMemFile):
     memoryStartIndex = 3
-    memBitsNum = 16
+    memBitsNum = bitsNum
     data = outputMemFile.readlines()
     outputMemFile.seek(0)
     lineLength = len(data[memoryStartIndex])
@@ -28,7 +29,6 @@ def over_write_memory(memoryTuples, outputMemFile):
 def generate_empty_memory(memFile):    
     init = 0
     to = 2**12
-    bitsNum = 16
     with open(memFile, "a+") as f:
         if(init == 0):
             f.writelines("// Do not edit the following lines\n// instance=\n// format=mti addressradix=h dataradix=b version=1.0 wordsperline=1\n")
@@ -90,8 +90,8 @@ def check_syntax_error(instructionAddress, instruction, debugLines, instructionN
     if len(instruction.split()) == 3:
         first, second, third = instruction.split()
         if re.match(word, second+third, flags=0):
-            code = bin(int(third, 16))[2:].zfill(16)
-            if(len(code) == 16):
+            code = bin(int(third, bitsNum))[2:].zfill(bitsNum)
+            if(len(code) == bitsNum):
                 variables[first.lower()] = instructionAddress
                 debugLines.append(
                     (instruction, "hex", instructionAddress, code))
@@ -99,16 +99,16 @@ def check_syntax_error(instructionAddress, instruction, debugLines, instructionN
             else:
                 raise ValueError('Syntax Error: ', instruction)
     if re.match(org, instruction, flags=0):
-        newAddress = int((instruction.split())[1], 16)
+        newAddress = int((instruction.split())[1], bitsNum)
     elif re.match(hexaNum, instruction, flags=0):
-        code = bin(int(instruction, 16))[2:].zfill(16)
-        if(len(code) == 16):
+        code = bin(int(instruction, bitsNum))[2:].zfill(bitsNum)
+        if(len(code) == bitsNum):
             debugLines.append((instruction, "hex", instructionAddress, code))
         else:
             raise ValueError('Syntax Error: ', instruction)
     elif operation in oneOp:
         code = oneOp[operation]+reg[(instruction.split())[1].lower()]
-        if(len(code) == 16):
+        if(len(code) == bitsNum):
             debugLines.append((instruction, "1op", instructionAddress, code))
         else:
             raise ValueError('Syntax Error: ', instruction)
@@ -127,7 +127,7 @@ def check_syntax_error(instructionAddress, instruction, debugLines, instructionN
                     offest = addressNested - newAddress + 1
                     break
                 elif(re.match(org, instructions[i][1], flags=0)):
-                    addressNested = int((instructions[i][1].split())[1], 16)
+                    addressNested = int((instructions[i][1].split())[1], bitsNum)
                 elif(flag):
                     addressNested += 1
         if(offest == 0):
@@ -137,8 +137,8 @@ def check_syntax_error(instructionAddress, instruction, debugLines, instructionN
         if(offest > 0):
             code = branchOp[operation] + offestCode
         else:
-            code = branchOp[operation] + '1' + offestCode[1:]
-        if(len(code) == 16):
+            code = branchOp[operation] + bin(offest+(1<<6))[2:]
+        if(len(code) == bitsNum):
             debugLines.append((instruction, "1op", instructionAddress, code))
         else:
             raise ValueError('Syntax Error: ', instruction)
@@ -148,8 +148,8 @@ def check_syntax_error(instructionAddress, instruction, debugLines, instructionN
         if(src[0:2] == "@#"):
             key = src[2:].lower()
             if(key in variables):
-                code = bin(variables[key])[2:].zfill(16)
-                if(len(code) == 16):
+                code = bin(variables[key])[2:].zfill(bitsNum)
+                if(len(code) == bitsNum):
                     debugLines.append(
                         (variables[key], "hex", newAddress, code))
                     src = "@(r7)+"
@@ -161,8 +161,8 @@ def check_syntax_error(instructionAddress, instruction, debugLines, instructionN
         elif(src[0] == "#"):
             num = src[1:].lower()
             if re.match(hexaNum, num, flags=0):
-                code = bin(int(num, 16))[2:].zfill(16)
-                if(len(code) == 16):
+                code = bin(int(num, bitsNum))[2:].zfill(bitsNum)
+                if(len(code) == bitsNum):
                     debugLines.append(
                         (num, "hex", newAddress, code))
                     src = "(r7)+"
@@ -174,8 +174,8 @@ def check_syntax_error(instructionAddress, instruction, debugLines, instructionN
         if(dst[0:2] == "@#"):
             key = dst[2:].lower()
             if(key in variables):
-                code = bin(variables[key])[2:].zfill(16)
-                if(len(code) == 16):
+                code = bin(variables[key])[2:].zfill(bitsNum)
+                if(len(code) == bitsNum):
                     debugLines.append(
                         (variables[key], "hex", newAddress, code))
                     dst = "@(r7)+"
@@ -187,8 +187,8 @@ def check_syntax_error(instructionAddress, instruction, debugLines, instructionN
         elif(dst[0] == "#"):
             num = dst[1:].lower()
             if re.match(hexaNum, num, flags=0):
-                code = bin(int(num, 16))[2:].zfill(16)
-                if(len(code) == 16):
+                code = bin(int(num, bitsNum))[2:].zfill(bitsNum)
+                if(len(code) == bitsNum):
                     debugLines.append(
                         (num, "hex", newAddress, code))
                     dst = "(r7)+"
@@ -200,7 +200,7 @@ def check_syntax_error(instructionAddress, instruction, debugLines, instructionN
         if(len(arrayOp) == 3):
             if (src in reg) and (dst in reg):
                 code = twoOp[op]+reg[src]+reg[dst]
-                if(len(code) == 16):
+                if(len(code) == bitsNum):
                     debugLines.append(
                         (instruction, "2op", instructionAddress, code))
                 else:
@@ -210,7 +210,7 @@ def check_syntax_error(instructionAddress, instruction, debugLines, instructionN
     elif operation in noOp:
         if(len(instruction.split()) < 2):
             code = noOp[operation]
-            if(len(code) == 16):
+            if(len(code) == bitsNum):
                 debugLines.append(
                     (instruction, "nop", instructionAddress, code))
             else:
