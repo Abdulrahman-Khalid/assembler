@@ -1,0 +1,15 @@
+----------------------------- START CODE -----------------------------
+.org 1e
+inc r1
+mov r1,r2
+dec r2
+add r4,r2
+nop
+----------------------------- END CODE -----------------------------
+----------------------------- START INSTRUCTION ADDRESSES -----------------------------
+(instruction = inc R1) (instruction type = 1op) (address in hex = 0x1e) (instruction code = 0000101010000001)
+(instruction = MoV R1,R2) (instruction type = 2op) (address in hex = 0x1f) (instruction code = 0001000001000010)
+(instruction = dec R2) (instruction type = 1op) (address in hex = 0x20) (instruction code = 0000101011000010)
+(instruction = Add R4,R2) (instruction type = 2op) (address in hex = 0x21) (instruction code = 0110000100000010)
+(instruction = NOP) (instruction type = nop) (address in hex = 0x22) (instruction code = 0000000010100000)
+----------------------------- END INSTRUCTION ADDRESSES -----------------------------

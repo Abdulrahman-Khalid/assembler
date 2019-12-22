@@ -8,6 +8,20 @@ noOp = {}
 reg = {}
 
 
+def over_write_memory(memoryTuples, outputMemFile):
+    memoryStartIndex = 3
+    memBitsNum = 16
+    data = outputMemFile.readlines()
+    outputMemFile.seek(0)
+    lineLength = len(data[memoryStartIndex])
+    for instructionAddress, opCode in memoryTuples:
+        data[instructionAddress+memoryStartIndex] = data[instructionAddress +
+                                                         memoryStartIndex][0:lineLength-(memBitsNum+1)]+opCode+'\n'
+        print(data[instructionAddress+memoryStartIndex])
+    outputMemFile.writelines(data)
+    outputMemFile.truncate()
+
+
 def load_codes():
     with open("./one_operand.txt") as f:
         for line in f:
@@ -36,11 +50,6 @@ def load_codes():
             line = line.replace("\n", '')
             key, space, val = line.partition(' ')
             reg[key] = val
-
-
-def isOpType(opType, instruction):
-
-    return
 
 
 def check_syntax_error(instructionAddress, instruction, debugLines):
@@ -119,7 +128,9 @@ def compile_code(lines, debug):
     debug.writelines(
         "----------------------------- END INSTRUCTION ADDRESSES -----------------------------\n")
     # check if there is a syntax error
-    return instructions
+    # (address in decimal, instruction code)
+    memoryTuples = [(x[-2], x[-1]) for x in debugLines]
+    return memoryTuples
 
 
 def main():
@@ -138,7 +149,8 @@ def main():
         lines = f.readlines()
         debug = open(debugFile, 'w')
         output = open(outputFile, "r+")
-        instructions = compile_code(lines, debug)
+        memoryTuples = compile_code(lines, debug)
+        over_write_memory(memoryTuples, output)
         print("FINISHED!")
         f.close()
         output.close()
