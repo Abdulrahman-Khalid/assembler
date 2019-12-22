@@ -1,0 +1,9 @@
+mov     0001
+add     0110
+adc     0100
+sub     1110
+sbc     1001
+and     0011
+or      0101
+xnor    0111000
+cmp     0010
