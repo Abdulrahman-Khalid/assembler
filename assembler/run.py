@@ -26,35 +26,35 @@ def over_write_memory(memoryTuples, outputMemFile):
 
 
 def load_codes():
-    with open("./one_operand.txt") as f:
+    with open("./imports/one_operand.txt") as f:
         for line in f:
             line = re.sub(' +', ' ', line)
             line = line.replace("\n", '')
             key, space, val = line.partition(' ')
             oneOp[key] = val
 
-    with open("./branch_operand.txt") as f:
+    with open("./imports/branch_operand.txt") as f:
         for line in f:
             line = re.sub(' +', ' ', line)
             line = line.replace("\n", '')
             key, space, val = line.partition(' ')
             branchOp[key] = val
 
-    with open("./two_operand.txt") as f:
+    with open("./imports/two_operand.txt") as f:
         for line in f:
             line = re.sub(' +', ' ', line)
             line = line.replace("\n", '')
             key, space, val = line.partition(' ')
             twoOp[key] = val
 
-    with open("./no_operand.txt") as f:
+    with open("./imports/no_operand.txt") as f:
         for line in f:
             line = re.sub(' +', ' ', line)
             line = line.replace("\n", '')
             key, space, val = line.partition(' ')
             noOp[key] = val
 
-    with open("./src_dst.txt") as f:
+    with open("./imports/src_dst.txt") as f:
         for line in f:
             line = re.sub(' +', ' ', line)
             line = line.replace("\n", '')
