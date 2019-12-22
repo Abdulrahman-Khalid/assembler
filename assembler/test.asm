@@ -2,7 +2,10 @@
 //#########################
 
 .ORG 1e     //comment
-inc R1    
+inc R1
+label2:
+cmp r0,r3
+Beq label2   
 V .word 13e    
 Br label1   //31 br rqm => 31 + (rqm) = 35
 MoV R1,R2   //comment

@@ -8,8 +8,8 @@ branchOp = {}
 twoOp = {}
 noOp = {}
 reg = {}
-
-variables = {}
+labels = {}
+variables = {}  # have key => variable name, value => address of value of the variable
 
 
 def over_write_memory(memoryTuples, outputMemFile):
@@ -67,9 +67,16 @@ def check_syntax_error(instructionAddress, instruction, debugLines, instructionN
     org = r"(^\.[oO][rR][gG]\s{0,1}[0-9a-fA-F]+$)"
     word = r"(^\.[wW][oO][rR][dD]\s{0,1}[0-9a-fA-F]+$)"
     hexaNum = r"(^\s{0,1}[0-9a-fA-F]+$)"
+    label = r"(^[A-Za-z][a-z|A-Z|0-9]+:{1}$)"
     operation = (instruction.split())[0].lower()
+    if re.match(label, instruction, flags=0):
+        key = instruction[0:-1].lower()
+        if key in labels:
+            raise ValueError('Syntax Error: ', instruction)
+        else:
+            labels[key] = instructionAddress
+            return instructionAddress
     newAddress = instructionAddress + 1
-
     if len(instruction.split()) == 3:
         first, second, third = instruction.split()
         if re.match(word, second+third, flags=0):
@@ -80,7 +87,7 @@ def check_syntax_error(instructionAddress, instruction, debugLines, instructionN
                     (instruction, "hex", instructionAddress, code))
                 return newAddress
             else:
-                raise ValueError('A syntx error', instruction)
+                raise ValueError('Syntax Error: ', instruction)
     if re.match(org, instruction, flags=0):
         newAddress = int((instruction.split())[1], 16)
     elif re.match(hexaNum, instruction, flags=0):
@@ -88,36 +95,43 @@ def check_syntax_error(instructionAddress, instruction, debugLines, instructionN
         if(len(code) == 16):
             debugLines.append((instruction, "hex", instructionAddress, code))
         else:
-            raise ValueError('A syntx error', instruction)
+            raise ValueError('Syntax Error: ', instruction)
     elif operation in oneOp:
         code = oneOp[operation]+reg[(instruction.split())[1].lower()]
         if(len(code) == 16):
             debugLines.append((instruction, "1op", instructionAddress, code))
         else:
-            raise ValueError('A syntx error', instruction)
+            raise ValueError('Syntax Error: ', instruction)
     elif operation in branchOp:
         to = (instruction.split())[1].lower()
-        offest = -1
+        offest = 0
         addressNested = newAddress
-        for i in range(instructionNum+1, len(instructions)):
-            operationNested = (instructions[i][1].split())[0].lower()
-            flag = re.match(
-                hexaNum, instructions[i][1], flags=0) or operationNested in oneOp or operationNested in branchOp or operationNested in twoOp or operationNested in noOp
-            if to+":" == instructions[i][1].replace(" ", "").lower():
-                offest = addressNested - newAddress
-                instructions.pop(i)  # address
-                break
-            elif(re.match(org, instructions[i][1], flags=0)):
-                addressNested = int((instructions[i][1].split())[1], 16)
-            elif(flag):
-                addressNested += 1
-        if(offest == -1):
-            raise ValueError('A syntx error', instruction)
-        code = branchOp[operation] + bin(offest+1)[2:].zfill(6)
+        if to in labels:
+            offest = labels[to] - instructionAddress
+        else:
+            for i in range(instructionNum+1, len(instructions)):
+                operationNested = (instructions[i][1].split())[0].lower()
+                flag = re.match(
+                    hexaNum, instructions[i][1], flags=0) or operationNested in oneOp or operationNested in branchOp or operationNested in twoOp or operationNested in noOp
+                if to+":" == instructions[i][1].replace(" ", "").lower():
+                    offest = addressNested - newAddress + 1
+                    break
+                elif(re.match(org, instructions[i][1], flags=0)):
+                    addressNested = int((instructions[i][1].split())[1], 16)
+                elif(flag):
+                    addressNested += 1
+        if(offest == 0):
+            raise ValueError('Syntax Error: ', instruction)
+
+        offestCode = bin(abs(offest))[2:].zfill(6)
+        if(offest > 0):
+            code = branchOp[operation] + offestCode
+        else:
+            code = branchOp[operation] + '1' + offestCode[1:]
         if(len(code) == 16):
             debugLines.append((instruction, "1op", instructionAddress, code))
         else:
-            raise ValueError('A syntx error', instruction)
+            raise ValueError('Syntax Error: ', instruction)
     elif operation in twoOp:
         arrayOp = (instruction.replace(',', ' ')).split()
         op, src, dst = [x.lower() for x in arrayOp]
@@ -131,9 +145,9 @@ def check_syntax_error(instructionAddress, instruction, debugLines, instructionN
                     src = "@(r7)+"
                     newAddress += 1
                 else:
-                    raise ValueError('A syntx error', instruction)
+                    raise ValueError('Syntax Error: ', instruction)
             else:
-                raise ValueError('A syntx error', instruction)
+                raise ValueError('Syntax Error: ', instruction)
         elif(src[0] == "#"):
             num = src[1:].lower()
             if re.match(hexaNum, num, flags=0):
@@ -144,9 +158,9 @@ def check_syntax_error(instructionAddress, instruction, debugLines, instructionN
                     src = "(r7)+"
                     newAddress += 1
                 else:
-                    raise ValueError('A syntx error', instruction)
+                    raise ValueError('Syntax Error: ', instruction)
             else:
-                raise ValueError('A syntx error', instruction)
+                raise ValueError('Syntax Error: ', instruction)
         if(dst[0:2] == "@#"):
             key = dst[2:].lower()
             if(key in variables):
@@ -157,9 +171,9 @@ def check_syntax_error(instructionAddress, instruction, debugLines, instructionN
                     dst = "@(r7)+"
                     newAddress += 1
                 else:
-                    raise ValueError('A syntx error', instruction)
+                    raise ValueError('Syntax Error: ', instruction)
             else:
-                raise ValueError('A syntx error', instruction)
+                raise ValueError('Syntax Error: ', instruction)
         elif(dst[0] == "#"):
             num = dst[1:].lower()
             if re.match(hexaNum, num, flags=0):
@@ -170,9 +184,9 @@ def check_syntax_error(instructionAddress, instruction, debugLines, instructionN
                     dst = "(r7)+"
                     newAddress += 1
                 else:
-                    raise ValueError('A syntx error', instruction)
+                    raise ValueError('Syntax Error: ', instruction)
             else:
-                raise ValueError('A syntx error', instruction)
+                raise ValueError('Syntax Error: ', instruction)
         if(len(arrayOp) == 3):
             if (src in reg) and (dst in reg):
                 code = twoOp[op]+reg[src]+reg[dst]
@@ -180,9 +194,9 @@ def check_syntax_error(instructionAddress, instruction, debugLines, instructionN
                     debugLines.append(
                         (instruction, "2op", instructionAddress, code))
                 else:
-                    raise ValueError('A syntx error', instruction)
+                    raise ValueError('Syntax Error: ', instruction)
             else:
-                raise ValueError('A syntx error', instruction)
+                raise ValueError('Syntax Error: ', instruction)
     elif operation in noOp:
         if(len(instruction.split()) < 2):
             code = noOp[operation]
@@ -190,11 +204,11 @@ def check_syntax_error(instructionAddress, instruction, debugLines, instructionN
                 debugLines.append(
                     (instruction, "nop", instructionAddress, code))
             else:
-                raise ValueError('A syntx error', instruction)
+                raise ValueError('Syntax Error: ', instruction)
         else:
-            raise ValueError('A syntx error', instruction)
+            raise ValueError('Syntax Error: ', instruction)
     else:
-        raise ValueError('A syntx error', instruction)
+        raise ValueError('Syntax Error: ', instruction)
     return newAddress
 
 
@@ -229,7 +243,7 @@ def compile_code(lines, debug):
         ["(instruction = %s) (instruction type = %s) (address in hex = 0x%x) (instruction code = %s)\n" % debugLine for debugLine in debugLines])
     debug.writelines(
         "----------------------------- END INSTUCTION INFORMATION LIST -------------------------------\n")
-    # check if there is a syntax error
+    # check if there is a Syntax Error:
     # (address in decimal, instruction code)
     memoryTuples = [(x[-2], x[-1]) for x in debugLines]
     return memoryTuples
