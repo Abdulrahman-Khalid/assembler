@@ -118,7 +118,6 @@ def check_syntax_error(instructionAddress, instruction, debugLines, instructionN
         addressNested = newAddress
         if to in labels:
             offest = labels[to] - instructionAddress - 1
-            print("hi: ",offest)
         else:
             for i in range(instructionNum+1, len(instructions)):
                 operationNested = (instructions[i][1].split())[0].lower()
