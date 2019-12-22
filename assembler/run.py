@@ -25,6 +25,16 @@ def over_write_memory(memoryTuples, outputMemFile):
     outputMemFile.writelines(data)
     outputMemFile.truncate()
 
+def generate_empty_memory(memFile):    
+    init = 0
+    to = 2**12
+    bitsNum = 16
+    with open(memFile, "a+") as f:
+        if(init == 0):
+            f.writelines("// Do not edit the following lines\n// instance=\n// format=mti addressradix=h dataradix=b version=1.0 wordsperline=1\n")
+        for i in range(init, to):
+            f.writelines(hex(i)[2:].zfill(3)+": "+ "X"*bitsNum+"\n")
+
 
 def load_codes():
     with open("./imports/one_operand.txt") as f:
@@ -239,8 +249,8 @@ def compile_code(lines, debug):
     debugLines.sort(key=lambda tup: tup[2])
     debug.writelines(
         "----------------------------- START INSTUCTION INFORMATION LIST -----------------------------\n")
-    debug.writelines(
-        ["(instruction = %s) (instruction type = %s) (address in hex = 0x%x) (instruction code = %s)\n" % debugLine for debugLine in debugLines])
+    for debugLine in debugLines:
+        debug.writelines("(instruction = {}) (instruction type = {}) (address in hex = {}) (instruction code = {})\n".format(debugLine[0],debugLine[1],hex(debugLine[2])[2:].zfill(3),debugLine[3]))
     debug.writelines(
         "----------------------------- END INSTUCTION INFORMATION LIST -------------------------------\n")
     # check if there is a Syntax Error:
@@ -277,3 +287,4 @@ def main():
 
 
 main()
+# generate_empty_memory("./original.mem")
