@@ -8,6 +8,8 @@ twoOp = {}
 noOp = {}
 reg = {}
 
+variables = {}
+
 
 def over_write_memory(memoryTuples, outputMemFile):
     memoryStartIndex = 3
@@ -62,15 +64,27 @@ def load_codes():
 
 def check_syntax_error(instructionAddress, instruction, debugLines, instructionNum, instructions):
     org = r"(^\.[oO][rR][gG]\s{0,1}[0-9a-fA-F]+$)"
+    word = r"(^\.[wW][oO][rR][dD]\s{0,1}[0-9a-fA-F]+$)"
     hexaNum = r"(^\s{0,1}[0-9a-fA-F]+$)"
     operation = (instruction.split())[0].lower()
     newAddress = instructionAddress + 1
 
+    if len(instruction.split()) == 3:
+        first, second, third = instruction.split()
+        if re.match(word, second+third, flags=0):
+            code = bin(int(third, 16))[2:].zfill(16)
+            if(len(code) == 16):
+                variables[first.lower()] = instructionAddress
+                debugLines.append(
+                    (instruction, "hex", instructionAddress, code))
+                return newAddress
+            else:
+                raise ValueError('A syntx error', instruction)
     if re.match(org, instruction, flags=0):
         newAddress = int((instruction.split())[1], 16)
     elif re.match(hexaNum, instruction, flags=0):
-        code = bin(int(hexaNum, 16))[2:].zfill(16)
-        if(len(code) == 0):
+        code = bin(int(instruction, 16))[2:].zfill(16)
+        if(len(code) == 16):
             debugLines.append((instruction, "hex", instructionAddress, code))
         else:
             raise ValueError('A syntx error', instruction)
@@ -106,6 +120,58 @@ def check_syntax_error(instructionAddress, instruction, debugLines, instructionN
     elif operation in twoOp:
         arrayOp = (instruction.replace(',', ' ')).split()
         op, src, dst = [x.lower() for x in arrayOp]
+        if(src[0:2] == "@#"):
+            key = src[2:].lower()
+            if(key in variables):
+                code = bin(variables[key])[2:].zfill(16)
+                if(len(code) == 16):
+                    debugLines.append(
+                        (variables[key], "hex", newAddress, code))
+                    src = "@(r7)+"
+                    newAddress += 1
+                else:
+                    raise ValueError('A syntx error', instruction)
+            else:
+                raise ValueError('A syntx error', instruction)
+        elif(src[0] == "#"):
+            num = src[1:].lower()
+            if re.match(hexaNum, num, flags=0):
+                code = bin(int(num, 16))[2:].zfill(16)
+                if(len(code) == 16):
+                    debugLines.append(
+                        (num, "hex", newAddress, code))
+                    src = "(r7)+"
+                    newAddress += 1
+                else:
+                    raise ValueError('A syntx error', instruction)
+            else:
+                raise ValueError('A syntx error', instruction)
+        if(dst[0:2] == "@#"):
+            key = dst[2:].lower()
+            if(key in variables):
+                code = bin(variables[key])[2:].zfill(16)
+                if(len(code) == 16):
+                    debugLines.append(
+                        (variables[key], "hex", newAddress, code))
+                    dst = "@(r7)+"
+                    newAddress += 1
+                else:
+                    raise ValueError('A syntx error', instruction)
+            else:
+                raise ValueError('A syntx error', instruction)
+        elif(dst[0] == "#"):
+            num = dst[1:].lower()
+            if re.match(hexaNum, num, flags=0):
+                code = bin(int(num, 16))[2:].zfill(16)
+                if(len(code) == 16):
+                    debugLines.append(
+                        (num, "hex", newAddress, code))
+                    dst = "(r7)+"
+                    newAddress += 1
+                else:
+                    raise ValueError('A syntx error', instruction)
+            else:
+                raise ValueError('A syntx error', instruction)
         if(len(arrayOp) == 3):
             if (src in reg) and (dst in reg):
                 code = twoOp[op]+reg[src]+reg[dst]
@@ -139,7 +205,7 @@ def compile_code(lines, debug):
     debugLines = []
     instructionAddress = 0
     for lineNum, line in enumerate(lines):
-        instruction = line.partition('#')[0]
+        instruction = line.partition('//')[0]
         instruction = ' '.join(instruction.split())
         if (instruction != ''):
             instructions.append((lineNum, instruction.lower()))
@@ -155,6 +221,7 @@ def compile_code(lines, debug):
 
     debug.writelines(
         "----------------------------- END CODE -------------------------------\n")
+    debugLines.sort(key=lambda tup: tup[2])
     debug.writelines(
         "----------------------------- START INSTUCTION INFORMATION LIST -----------------------------\n")
     debug.writelines(
