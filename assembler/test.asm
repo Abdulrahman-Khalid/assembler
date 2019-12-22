@@ -4,6 +4,7 @@
 .ORG 1e     //comment
 inc R1
 label2:
+add r0,#4
 cmp r0,r3
 Beq label2   
 V .word 13e    
