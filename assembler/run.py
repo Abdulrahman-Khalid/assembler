@@ -3,6 +3,7 @@ import re
 import tqdm
 
 oneOp = {}
+branchOp = {}
 twoOp = {}
 noOp = {}
 reg = {}
@@ -30,6 +31,13 @@ def load_codes():
             key, space, val = line.partition(' ')
             oneOp[key] = val
 
+    with open("./branch_operand.txt") as f:
+        for line in f:
+            line = re.sub(' +', ' ', line)
+            line = line.replace("\n", '')
+            key, space, val = line.partition(' ')
+            branchOp[key] = val
+
     with open("./two_operand.txt") as f:
         for line in f:
             line = re.sub(' +', ' ', line)
@@ -52,11 +60,12 @@ def load_codes():
             reg[key] = val
 
 
-def check_syntax_error(instructionAddress, instruction, debugLines):
+def check_syntax_error(instructionAddress, instruction, debugLines, instructionNum, instructions):
     org = r"(^\.[oO][rR][gG]\s{0,1}[0-9a-fA-F]+$)"
     hexaNum = r"(^\s{0,1}[0-9a-fA-F]+$)"
     operation = (instruction.split())[0].lower()
     newAddress = instructionAddress + 1
+
     if re.match(org, instruction, flags=0):
         newAddress = int((instruction.split())[1], 16)
     elif re.match(hexaNum, instruction, flags=0):
@@ -67,6 +76,29 @@ def check_syntax_error(instructionAddress, instruction, debugLines):
             raise ValueError('A syntx error', instruction)
     elif operation in oneOp:
         code = oneOp[operation]+reg[(instruction.split())[1].lower()]
+        if(len(code) == 16):
+            debugLines.append((instruction, "1op", instructionAddress, code))
+        else:
+            raise ValueError('A syntx error', instruction)
+    elif operation in branchOp:
+        to = (instruction.split())[1].lower()
+        offest = -1
+        addressNested = newAddress
+        for i in range(instructionNum+1, len(instructions)):
+            operationNested = (instructions[i][1].split())[0].lower()
+            flag = re.match(
+                hexaNum, instructions[i][1], flags=0) or operationNested in oneOp or operationNested in branchOp or operationNested in twoOp or operationNested in noOp
+            if to+":" == instructions[i][1].replace(" ", "").lower():
+                offest = addressNested - newAddress
+                instructions.pop(i)  # address
+                break
+            elif(re.match(org, instructions[i][1], flags=0)):
+                addressNested = int((instructions[i][1].split())[1], 16)
+            elif(flag):
+                addressNested += 1
+        if(offest == -1):
+            raise ValueError('A syntx error', instruction)
+        code = branchOp[operation] + bin(offest+1)[2:].zfill(6)
         if(len(code) == 16):
             debugLines.append((instruction, "1op", instructionAddress, code))
         else:
@@ -110,23 +142,25 @@ def compile_code(lines, debug):
         instruction = line.partition('#')[0]
         instruction = ' '.join(instruction.split())
         if (instruction != ''):
-            instructions.append(instruction.lower())
+            instructions.append((lineNum, instruction.lower()))
             debug.writelines(instruction.lower()+'\n')
-            try:
-                instructionAddress = check_syntax_error(
-                    instructionAddress, instruction, debugLines)
-            except ValueError as err:
-                print("\nERROR in line: {}, code instruction: {}\n".format(
-                    lineNum, instruction))
-                sys.exit()
+    for instructionNum, instructionTuple in enumerate(instructions):
+        try:
+            instructionAddress = check_syntax_error(
+                instructionAddress, instructionTuple[1], debugLines, instructionNum, instructions)
+        except ValueError as err:
+            print("\nERROR in line: {}, code instruction: {}\n".format(
+                instructionTuple[0], instructionTuple[1]))
+            sys.exit()
+
     debug.writelines(
-        "----------------------------- END CODE -----------------------------\n")
+        "----------------------------- END CODE -------------------------------\n")
     debug.writelines(
-        "----------------------------- START INSTRUCTION ADDRESSES -----------------------------\n")
+        "----------------------------- START INSTUCTION INFORMATION LIST -----------------------------\n")
     debug.writelines(
         ["(instruction = %s) (instruction type = %s) (address in hex = 0x%x) (instruction code = %s)\n" % debugLine for debugLine in debugLines])
     debug.writelines(
-        "----------------------------- END INSTRUCTION ADDRESSES -----------------------------\n")
+        "----------------------------- END INSTUCTION INFORMATION LIST -------------------------------\n")
     # check if there is a syntax error
     # (address in decimal, instruction code)
     memoryTuples = [(x[-2], x[-1]) for x in debugLines]
@@ -156,7 +190,7 @@ def main():
         output.close()
         debug.close()
     except IOError:
-        print("Could not open or read one of the files:")
+        print("Could not open files")
         sys.exit()
 
 
