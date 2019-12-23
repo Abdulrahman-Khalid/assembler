@@ -87,4 +87,7 @@ ARCHITECTURE main_arch OF main IS
 	   tristateZ: entity work.TriStateGeneric GENERIC MAP (16) port map(zRegOut,EXE(zOut),BUS_DATA);   
 	   tristateMDR: entity work.TriStateGeneric GENERIC MAP (16) port map(mdr_out,EXE(mdrOut),BUS_DATA);  
 	   tristateSRC: entity work.TriStateGeneric GENERIC MAP (16) port map(Q_SRC,EXE(srcOut),BUS_DATA);   
+		--    constant pcIn: integer := 9;
+		--    constant irIn: integer := 10;
+		--    constant zIn: integer := 11;
 END main_arch;
