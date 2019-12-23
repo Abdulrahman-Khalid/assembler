@@ -26,9 +26,9 @@ ARCHITECTURE main_arch OF main IS
 	  signal yRegOut,flagRegIn, flagRegOut, aluResult, zRegOut, mar_out ,mem_to_mdr ,mdr_out: std_logic_vector(15 downto 0);
 	  -- SELECTOR SIGNALS 
 	  -- SOURCE SIGNALS
-	  SIGNAL SIG_SEL,Q_SEL :STD_LOGIC_VECTOR(1 DOWNTO 0);
-	  SIGNAL SIG_SRC,Q_SRC :STD_LOGIC_VECTOR(15 DOWNTO 0);
-	  SIGNAL E_SEL,E_SRC : STD_LOGIC;
+	  SIGNAL SIG_SEL, Q_SEL :STD_LOGIC_VECTOR(1 DOWNTO 0);
+	  SIGNAL SIG_SRC, Q_SRC, SIG_DST, Q_DST :STD_LOGIC_VECTOR(15 DOWNTO 0);
+	  SIGNAL E_SEL,E_SRC, E_DST : STD_LOGIC;
 	BEGIN
 	   
 	   --DEC_REG_DIR_SRC : DECODER GENERIC MAP (3) PORT MAP (IR(8 DOWNTO 6), OUT_DEC_SRC);
@@ -71,17 +71,29 @@ ARCHITECTURE main_arch OF main IS
 	   -- SET SELECTOR AND SET SOURCE REGISTER 
 	   SE: ENTITY WORK.REG GENERIC MAP (2) PORT MAP (SIG_SEL, E_SEL, CLK, RST, Q_SEL);
        SR: ENTITY WORK.REG GENERIC MAP (16) PORT MAP (SIG_SRC, E_SRC, CLK, RST, Q_SRC);  
- 	-- dst: ENTITY WORK.REG GENERIC MAP (16) PORT MAP ();
-     SIG_SEL <= SEL WHEN M_IR(15 DOWNTO 11) = "01010" ELSE
-                NEW_SEL WHEN M_IR(15 DOWNTO 11) = "11000" ELSE
-                Q_SEL;
-     E_SEL <= '1' WHEN M_IR(15 DOWNTO 11) = "01010" OR M_IR(15 DOWNTO 11) = "11000" ELSE
-              '0';
+ 	   dst: ENTITY WORK.REG GENERIC MAP (16) PORT MAP (SIG_DST, E_DST, CLK, RST, Q_DST);
+	 
+		SIG_SEL <= SEL WHEN M_IR(15 DOWNTO 11) = "01010" ELSE
+			NEW_SEL WHEN M_IR(15 DOWNTO 11) = "11000" ELSE
+			Q_SEL;
+	 
+		E_SEL <= '1' WHEN M_IR(15 DOWNTO 11) = "01010" OR M_IR(15 DOWNTO 11) = "11000" ELSE
+            '0';
      
-     SIG_SRC <= NEW_SRC WHEN Q_SEL = "10" AND M_IR(15 DOWNTO 11) = "11000" ELSE
-                Q_SRC;
-     E_SRC <= '1' WHEN (Q_SEL = "10" AND M_IR(15 DOWNTO 11) = "11000") or EXE(srcIn) = '1' ELSE
-              '0';
+		SIG_SRC <= NEW_SRC WHEN Q_SEL = "10" AND M_IR(15 DOWNTO 11) = "11000" 
+			ELSE BUS_DATA WHEN EXE(srcIn) = '1'
+			ELSE Q_SRC;
+		 
+		E_SRC <= '1' WHEN (Q_SEL = "10" AND M_IR(15 DOWNTO 11) = "11000") or EXE(srcIn) = '1' ELSE
+			'0';
+			  
+		--SIG_DST <= NEW_SRC WHEN Q_SEL = "10" AND M_IR(15 DOWNTO 11) = "11000" ELSE
+			-- ELSE BUS_DATA WHEN EXE(dstIn) = '1'
+			-- ELSE Q_DST;
+
+		-- don't remove EXE(dstIn) = '1' from the next line
+		--E_DST <= '1' WHEN (Q_SEL = "10" AND M_IR(15 DOWNTO 11) = "11000") or EXE(dstIn) = '1' ELSE
+		--			'0';
 	   
 	   --tristates out to bus
 	   tristateRegDst: entity work.TriStateGeneric GENERIC MAP (16) port map(DEST,EXE(dstOut),BUS_DATA); 
