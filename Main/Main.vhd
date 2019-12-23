@@ -32,7 +32,7 @@ ARCHITECTURE main_arch OF main IS
 	  SIGNAL notClk: STD_LOGIC;
 	BEGIN
 	   
-	   notClk<= not(Clk);
+	   notClk <= not(Clk);
 	   --DEC_REG_DIR_SRC : DECODER GENERIC MAP (3) PORT MAP (IR(8 DOWNTO 6), OUT_DEC_SRC);
 	   DEC_REG_DIR_DST : DECODER GENERIC MAP (3) PORT MAP (IR(2 DOWNTO 0), ENAPLE_REGISTER);
 	   irReg: ENTITY WORK.REG GENERIC MAP (16) PORT MAP (BUS_DATA, EXE(irIn), CLK, RST, IR);
@@ -60,9 +60,9 @@ ARCHITECTURE main_arch OF main IS
 	   
 	   --alu main implementation
 	   yReg: ENTITY WORK.REG GENERIC MAP (16) PORT MAP (BUS_DATA, EXE(yIn), CLK, RST, yRegOut);  
-	   flagReg: ENTITY WORK.REG GENERIC MAP (16) PORT MAP (flagRegIn, '1', not(Clk), RST, flagRegOut);  
+	   flagReg: ENTITY WORK.REG GENERIC MAP (16) PORT MAP (flagRegIn, '1', notClk, RST, flagRegOut);  
 	   alu0: entity work.alu generic map(16,5) port map(operationCode, BUS_DATA, yRegOut, aluResult,flagRegOut(flagsCount-1 downto 0), flagRegIn(flagsCount-1 downto 0));
-	   zReg: ENTITY WORK.REG GENERIC MAP (16) PORT MAP (aluResult, EXE(zIn), not(Clk), RST, zRegOut);  
+	   zReg: ENTITY WORK.REG GENERIC MAP (16) PORT MAP (aluResult, EXE(zIn), notClk, RST, zRegOut);  
 	   
 	   --ram --mar_out --mem_to_mdr --mdr_out
 	   marReg: ENTITY WORK.REG GENERIC MAP (16) PORT MAP(BUS_DATA, EXE(marIn), CLK, RST, mar_out);  
