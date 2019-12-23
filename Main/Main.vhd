@@ -25,6 +25,11 @@ ARCHITECTURE main_arch OF main IS
 	  signal yRegOut:std_logic_vector(16,0);
 	  signal operationCode:std_logic_vector(4 downto 0);
 	  signal flagRegIn, flagRegOut, aluResult, zRegOut, mar_out ,mem_to_mdr ,mdr_out: std_logic_vector(16 downto 0);
+	  -- SELECTOR SIGNALS 
+	  -- SOURCE SIGNALS
+	  SIGNAL SIG_SEL,Q_SEL :STD_LOGIC_VECTOR(1 DOWNTO 0);
+	  SIGNAL SIG_SRC,Q_SRC :STD_LOGIC_VECTOR(15 DOWNTO 0);
+	  SIGNAL E_SEL,E_SRC : STD_LOGIC;
 	BEGIN
 	   
 	   --DEC_REG_DIR_SRC : DECODER GENERIC MAP (3) PORT MAP (IR(8 DOWNTO 6), OUT_DEC_SRC);
@@ -42,7 +47,7 @@ ARCHITECTURE main_arch OF main IS
 	   
 	   mirReg: ENTITY WORK.REG GENERIC MAP (16) PORT MAP (, ENAPLE_REGISTER(7), CLK, RST, R7);  
 	   
-	   FR : ENTITY WORK.FETCH_REGISTERS PORT MAP(IR,R0,R1,R2,R3,R4,R5,R6,R7,NEW_SEL,DEST);
+	   FR : ENTITY WORK.FETCH_REGISTERS PORT MAP(IR,R0,R1,R2,R3,R4,R5,R6,R7,SEL,DEST);
 	   -- regDst: ENTITY WORK.REG GENERIC MAP (16) PORT MAP (DEST, , CLK, RST, BUS_DATA);  
 	   tristateRegDst: entity work.TriStateGeneric GENERIC MAP (16) port map(DEST,EXE(),BUS_DATA); 
 	   tristatePC: entity work.TriStateGeneric GENERIC MAP (16) port map(R7,EXE(),BUS_DATA); 
@@ -64,4 +69,21 @@ ARCHITECTURE main_arch OF main IS
 	   marReg: ENTITY WORK.REG GENERIC MAP (16) PORT MAP(BUS_DATA, EXE(MARin), CLK, RST, mar_out);  
 	   mdrReg: ENTITY WORK.MDR GENERIC MAP (16) PORT MAP(Clk,RST, EXE(MDRin), EXE(wr), mem_to_mdr, BUS_DATA, mdr_out);  
 	   ram0: entity work.ram port map (EXE(wr), EXE(rd), mar_out(11 downto 0), mdr_out, mem_to_mdr);
+	   
+	   -- SET SELECTOR AND SET SOURCE REGISTER 
+	   SE: ENTITY WORK.REG GENERIC MAP (2) PORT MAP (SIG_SEL, E_SEL, CLK, RST, Q_SEL);
+     SR: ENTITY WORK.REG GENERIC MAP (16) PORT MAP (SIG_SRC, E_SRC, CLK, RST, Q_SRC);  
+ 	     
+     SIG_SEL <= SEL WHEN M_IR(15 DOWNTO 11) = "01010" ELSE
+                NEW_SEL WHEN M_IR(15 DOWNTO 11) = "11000" ELSE
+                Q_SEL;
+     E_SEL <= '1' WHEN M_IR(15 DOWNTO 11) = "01010" OR M_IR(15 DOWNTO 11) = "11000" ELSE
+              '0';
+     
+     SIG_SRC <= NEW_SRC WHEN Q_SEL = "10" AND M_IR(15 DOWNTO 11) = "11000" ELSE
+                Q_SRC;
+     E_SRC <= '1' WHEN Q_SEL = "10" AND M_IR(15 DOWNTO 11) = "11000" ELSE
+              '0';
+	   
+	   
 	   END main_arch;
