@@ -47,9 +47,7 @@ ARCHITECTURE main_arch OF main IS
 	   mirReg: ENTITY WORK.REG GENERIC MAP (16) PORT MAP (, ENAPLE_REGISTER(7), CLK, RST, R7);  
 	   
 	   FR : ENTITY WORK.FETCH_REGISTERS PORT MAP(IR,R0,R1,R2,R3,R4,R5,R6,R7,Q_SEL,DEST);
-	   -- regDst: ENTITY WORK.REG GENERIC MAP (16) PORT MAP (DEST, , CLK, RST, BUS_DATA);  
-	   tristateRegDst: entity work.TriStateGeneric GENERIC MAP (16) port map(DEST,EXE(dstOut),BUS_DATA); 
-	   tristatePC: entity work.TriStateGeneric GENERIC MAP (16) port map(R7,EXE(pcOut),BUS_DATA); 
+	   -- regDst: ENTITY WORK.REG GENERIC MAP (16) PORT MAP (DEST, , CLK, RST, BUS_DATA);  	   
 	   OT : ENTITY WORK.OPERATION_TYPE PORT MAP(IR,SEL);
 	   FM : ENTITY WORK.FIRST_MIR PORT MAP(IR,Q_SEL,M_IR(15 DOWNTO 11));
 	   BD : ENTITY WORK.BIG_DECODER PORT MAP(clk, Q_SEL,ADRESS (15 DOWNTO 11), NEXT_ADDRESS(15 DOWNTO 11), IR (15 DOWNTO 0),EXE);
@@ -62,12 +60,10 @@ ARCHITECTURE main_arch OF main IS
 	   flagReg: ENTITY WORK.REG GENERIC MAP (16) PORT MAP (flagRegIn, '1', not(CLK), RST, flagRegOut);  
 	   alu0: entity work.alu generic map(16,5) port map(operationCode, BUS_DATA, yRegOut, aluResult,flagRegOut(flagsCount-1 downto 0), flagRegIn(flagsCount-1 downto 0));
 	   zReg: ENTITY WORK.REG GENERIC MAP (16) PORT MAP (aluResult, '1', not(CLK), RST, zRegOut);  
-	   tristateZ: entity work.TriStateGeneric GENERIC MAP (16) port map(zRegOut,EXE(zOut),BUS_DATA);   
 	   
 	   --ram --mar_out --mem_to_mdr --mdr_out
 	   marReg: ENTITY WORK.REG GENERIC MAP (16) PORT MAP(BUS_DATA, EXE(marIn), CLK, RST, mar_out);  
 	   mdrReg: ENTITY WORK.MDR GENERIC MAP (16) PORT MAP(Clk,RST, EXE(mdrIn), EXE(exeWrite), mem_to_mdr, BUS_DATA, mdr_out);
-	   tristateZ: entity work.TriStateGeneric GENERIC MAP (16) port map(mdr_out,EXE(MDRout),BUS_DATA);     
 	   ram0: entity work.ram port map (EXE(exeWrite), EXE(exeRead), mar_out(11 downto 0), mdr_out, mem_to_mdr);
 	   
 	   -- SET SELECTOR AND SET SOURCE REGISTER 
@@ -85,5 +81,10 @@ ARCHITECTURE main_arch OF main IS
      E_SRC <= '1' WHEN Q_SEL = "10" AND M_IR(15 DOWNTO 11) = "11000" ELSE
               '0';
 	   
-	   
-	   END main_arch;
+	   --tristates out to bus
+	   tristateRegDst: entity work.TriStateGeneric GENERIC MAP (16) port map(DEST,EXE(dstOut),BUS_DATA); 
+	   tristatePC: entity work.TriStateGeneric GENERIC MAP (16) port map(R7,EXE(pcOut),BUS_DATA); 
+	   tristateZ: entity work.TriStateGeneric GENERIC MAP (16) port map(zRegOut,EXE(zOut),BUS_DATA);   
+	   tristateMDR: entity work.TriStateGeneric GENERIC MAP (16) port map(mdr_out,EXE(MDRout),BUS_DATA);     
+
+END main_arch;
