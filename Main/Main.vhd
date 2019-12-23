@@ -116,3 +116,4 @@ ARCHITECTURE main_arch OF main IS
 		aluGetOp: entity work.ALU_OPERATION port map(Q_IR,Q_MIR,operationCode);
 	   --constant dstIn: integer := 19;
 END main_arch;
+
