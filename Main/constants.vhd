@@ -76,8 +76,8 @@ package constants is
     constant F0_NEXT: std_logic_vector(4 downto 0) :=  "10001";
     constant G0_NEXT: std_logic_vector(4 downto 0) :=  "10010";
     constant I1_NEXT: std_logic_vector(4 downto 0) :=  "10100";
-    constant 2OP1_NEXT: std_logic_vector(4 downto 0) :=  "10111";
-    constant 1OP0_NEXT: std_logic_vector(4 downto 0) :=  "10101";
+    constant OP2_1_NEXT: std_logic_vector(4 downto 0) :=  "10111";
+    constant OP1_0_NEXT: std_logic_vector(4 downto 0) :=  "10101";
 
     --OPCODES
     constant MOV_OPCODE: std_logic_vector(3 downto 0) :=  "0001";	
