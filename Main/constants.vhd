@@ -44,5 +44,26 @@ package constants is
     constant nFlag: integer :=2; --negative flag
     constant OFlag: integer :=3; --overflow flag
     constant pFlag: integer :=4; --parity flag
+    --23 EXE signals
+    --F1 -- 0 no trans & 6,7 not used
+    constant pcOut: integer := 1;
+    constant mdrOut: integer := 2;
+    constant zOut: integer := 3;
+    constant srcOut: integer := 4;
+    constant dstOut: integer := 5;
+    --F2 -- 8 no trans 
+    constant pcIn: integer := 9;
+    constant irIn: integer := 10;
+    constant zIn: integer := 11;
+    --F3 --12 no trans & 15 not used
+    constant marIn: integer := 13;
+    constant mdrIn: integer := 14;
+    --F4 --16 no trans
+    constant yIn: integer := 17;
+    constant srcIn: integer := 18;
+    constant dstIn: integer := 19;
+    --F6 --20 no trans & 23 not used
+    constant exeRead: integer := 21;
+    constant exeWrite: integer := 22;
 end constants;
     

@@ -66,12 +66,13 @@ ARCHITECTURE main_arch OF main IS
 	   
 	   --ram --mar_out --mem_to_mdr --mdr_out
 	   marReg: ENTITY WORK.REG GENERIC MAP (16) PORT MAP(BUS_DATA, EXE(MARin), CLK, RST, mar_out);  
-	   mdrReg: ENTITY WORK.MDR GENERIC MAP (16) PORT MAP(Clk,RST, EXE(MDRin), EXE(wr), mem_to_mdr, BUS_DATA, mdr_out);  
+	   mdrReg: ENTITY WORK.MDR GENERIC MAP (16) PORT MAP(Clk,RST, EXE(MDRin), EXE(wr), mem_to_mdr, BUS_DATA, mdr_out);
+	   tristateZ: entity work.TriStateGeneric GENERIC MAP (16) port map(mdr_out,EXE(MDRout),BUS_DATA);     
 	   ram0: entity work.ram port map (EXE(wr), EXE(rd), mar_out(11 downto 0), mdr_out, mem_to_mdr);
 	   
 	   -- SET SELECTOR AND SET SOURCE REGISTER 
 	   SE: ENTITY WORK.REG GENERIC MAP (2) PORT MAP (SIG_SEL, E_SEL, CLK, RST, Q_SEL);
-     SR: ENTITY WORK.REG GENERIC MAP (16) PORT MAP (SIG_SRC, E_SRC, CLK, RST, Q_SRC);  
+       SR: ENTITY WORK.REG GENERIC MAP (16) PORT MAP (SIG_SRC, E_SRC, CLK, RST, Q_SRC);  
  	     
      SIG_SEL <= SEL WHEN M_IR(15 DOWNTO 11) = "01010" ELSE
                 NEW_SEL WHEN M_IR(15 DOWNTO 11) = "11000" ELSE
