@@ -30,6 +30,7 @@ ARCHITECTURE main_arch OF main IS
 	  SIGNAL SIG_SRC, Q_SRC, SIG_DST, Q_DST :STD_LOGIC_VECTOR(15 DOWNTO 0);
 	  SIGNAL E_SEL,E_SRC, E_DST : STD_LOGIC;
 	  SIGNAL notClk: STD_LOGIC;
+	  signal MIROUT: std_logic_vector(4 downto 0);
 	BEGIN
 	   
 	   notClk <= not(Clk);
@@ -46,7 +47,7 @@ ARCHITECTURE main_arch OF main IS
 	   u7: ENTITY WORK.REG GENERIC MAP (16) PORT MAP (BUS_DATA, EXE(pcIn), CLK, RST, R7);  
 	   
 	   
-	   -- mirReg: ENTITY WORK.REG GENERIC MAP (16) PORT MAP (, ENAPLE_REGISTER(7), CLK, RST, R7);  
+	   --mirReg: ENTITY WORK.REG GENERIC MAP (5) PORT MAP (, ENAPLE_REGISTER(7), CLK, RST, MIROUT);  
 	   
 
 	   FR : ENTITY WORK.FETCH_REGISTERS PORT MAP(IR,R0,R1,R2,R3,R4,R5,R6,R7,Q_SEL,DEST);
@@ -103,6 +104,6 @@ ARCHITECTURE main_arch OF main IS
 	   tristateMDR: entity work.TriStateGeneric GENERIC MAP (16) port map(mdr_out,EXE(mdrOut),BUS_DATA);  
 	   tristateSRC: entity work.TriStateGeneric GENERIC MAP (16) port map(Q_SRC,EXE(srcOut),BUS_DATA);
 	   
-	--    aluGetOp: entity work.ALU_OPERATION generic map
+		aluGetOp: entity work.ALU_OPERATION port map(IR,MIROUT,operationCode);
 	   --constant dstIn: integer := 19;
 END main_arch;
