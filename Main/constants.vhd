@@ -68,5 +68,39 @@ package constants is
     constant exeRead: integer := 21;
     constant exeWrite: integer := 22;
     --23 not used
+    
+    --ADDRESSES
+    constant A0_NEXT: std_logic_vector(4 downto 0) :=  "01011";
+    constant B0_NEXT: std_logic_vector(4 downto 0) :=  "01101";
+    constant B3_NEXT: std_logic_vector(4 downto 0) :=  "10000";
+    constant F0_NEXT: std_logic_vector(4 downto 0) :=  "10001";
+    constant G0_NEXT: std_logic_vector(4 downto 0) :=  "10010";
+    constant I1_NEXT: std_logic_vector(4 downto 0) :=  "10100";
+    constant 2OP1_NEXT: std_logic_vector(4 downto 0) :=  "10111";
+    constant 1OP0_NEXT: std_logic_vector(4 downto 0) :=  "10101";
+
+    --OPCODES
+    constant MOV_OPCODE: std_logic_vector(3 downto 0) :=  "0001";	
+    constant ADD_OPCODE: std_logic_vector(3 downto 0) :=  "0110";
+    constant ADC_OPCODE: std_logic_vector(3 downto 0) :=  "0100";
+    constant SUB_OPCODE: std_logic_vector(3 downto 0) :=  "1110";
+    constant SBC_OPCODE: std_logic_vector(3 downto 0) :=  "1001";
+    constant AND_OPCODE: std_logic_vector(3 downto 0) :=  "0011";
+    constant OR_OPCODE: std_logic_vector(3 downto 0) :=  "0101";
+    constant XNOR_OPCODE: std_logic_vector(3 downto 0) :=  "0111";
+    constant CMP_OPCODE: std_logic_vector(3 downto 0) :=  "0010";
+
+    constant INC_OPCODE: std_logic_vector(9 downto 0) :=  "0000101010";
+    constant DEC_OPCODE: std_logic_vector(9 downto 0) :=  "0000101011";
+    constant CLR_OPCODE: std_logic_vector(9 downto 0) :=  "0000101000";
+    constant INV_OPCODE: std_logic_vector(9 downto 0) :=  "0000101100";
+    constant LSR_OPCODE: std_logic_vector(9 downto 0) :=  "0000110101";
+    constant ROR_OPCODE: std_logic_vector(9 downto 0) :=  "0000110000";
+    constant RRC_OPCODE: std_logic_vector(9 downto 0) :=  "1000110000";
+    constant ASR_OPCODE: std_logic_vector(9 downto 0) :=  "0000110010";
+    constant LSL_OPCODE: std_logic_vector(9 downto 0) :=  "0000110110";
+    constant ROL_OPCODE: std_logic_vector(9 downto 0) :=  "0000110001";
+    constant RLC_OPCODE: std_logic_vector(9 downto 0) :=  "1000110001";
+    
 end constants;
     
