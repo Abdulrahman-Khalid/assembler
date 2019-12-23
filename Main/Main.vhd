@@ -34,7 +34,7 @@ ARCHITECTURE main_arch OF main IS
 	   
 	   notClk <= not(Clk);
 	   --DEC_REG_DIR_SRC : DECODER GENERIC MAP (3) PORT MAP (IR(8 DOWNTO 6), OUT_DEC_SRC);
-	   DEC_REG_DIR_DST : Entity work.DECODER GENERIC MAP (3) PORT MAP (IR(2 DOWNTO 0), ENAPLE_REGISTER);
+	   DEC_REG_DIR_DST : Entity work.DECODER GENERIC MAP (3) PORT MAP (IR(2 DOWNTO 0),'1', ENAPLE_REGISTER);
 	   irReg: ENTITY WORK.REG GENERIC MAP (16) PORT MAP (BUS_DATA, EXE(irIn), CLK, RST, IR);
 	   u0: ENTITY WORK.REG GENERIC MAP (16) PORT MAP (BUS_DATA, ENAPLE_REGISTER(0), CLK, RST, R0);
 	   u1: ENTITY WORK.REG GENERIC MAP (16) PORT MAP (BUS_DATA, ENAPLE_REGISTER(1), CLK, RST, R1); 
@@ -102,6 +102,7 @@ ARCHITECTURE main_arch OF main IS
 	   tristateZ: entity work.TriStateGeneric GENERIC MAP (16) port map(zRegOut,EXE(zOut),BUS_DATA);   
 	   tristateMDR: entity work.TriStateGeneric GENERIC MAP (16) port map(mdr_out,EXE(mdrOut),BUS_DATA);  
 	   tristateSRC: entity work.TriStateGeneric GENERIC MAP (16) port map(Q_SRC,EXE(srcOut),BUS_DATA);
-
+	   
+	--    aluGetOp: entity work.ALU_OPERATION generic map
 	   --constant dstIn: integer := 19;
 END main_arch;
