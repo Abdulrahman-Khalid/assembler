@@ -22,9 +22,8 @@ ARCHITECTURE main_arch OF main IS
 	  --bus_data
 	  --y_reg with enable
 	  --operation_code
-	  signal yRegOut:std_logic_vector(15,0);
 	  signal operationCode:std_logic_vector(4 downto 0);
-	  signal flagRegIn, flagRegOut, aluResult, zRegOut, mar_out ,mem_to_mdr ,mdr_out: std_logic_vector(16 downto 0);
+	  signal yRegOut,flagRegIn, flagRegOut, aluResult, zRegOut, mar_out ,mem_to_mdr ,mdr_out: std_logic_vector(15 downto 0);
 	  -- SELECTOR SIGNALS 
 	  -- SOURCE SIGNALS
 	  SIGNAL SIG_SEL,Q_SEL :STD_LOGIC_VECTOR(1 DOWNTO 0);
