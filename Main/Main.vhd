@@ -9,7 +9,7 @@ ENTITY main IS
 END main;
 
 ARCHITECTURE main_arch OF main IS
-	  SIGNAL TO_RAM,RD,WR : STD_LOGIC;
+	  SIGNAL TO_RAM: STD_LOGIC;
 	  SIGNAL SEL,NEW_SEL :STD_LOGIC_VECTOR(1 DOWNTO 0);
 	  SIGNAL NEW_SRC, IR,DEST, MDR, SRC :STD_LOGIC_VECTOR(15 DOWNTO 0); 
 	  SIGNAL ENAPLE_REGISTER: STD_LOGIC_VECTOR(7 DOWNTO 0);
@@ -69,8 +69,8 @@ ARCHITECTURE main_arch OF main IS
 	   
 	   --ram --mar_out --mem_to_mdr --mdr_out
 	   marReg: ENTITY WORK.REG GENERIC MAP (16) PORT MAP(BUS_DATA, EXE(marIn), CLK, RST, mar_out);  
-	   mdrReg: ENTITY WORK.MDR GENERIC MAP (16) PORT MAP(Clk,RST, EXE(mdrIn), EXE(exeWrite), mem_to_mdr, BUS_DATA, mdr_out);
-	   ram0: entity work.ram port map (EXE(exeWrite), EXE(exeRead), mar_out(11 downto 0), mdr_out, mem_to_mdr);
+	   mdrReg: ENTITY WORK.MDR GENERIC MAP (16) PORT MAP(Clk,RST, EXE(mdrIn), TO_RAM, mem_to_mdr, BUS_DATA, mdr_out);
+	   ram0: entity work.ram port map (TO_RAM, EXE(exeRead), mar_out(11 downto 0), mdr_out, mem_to_mdr);
 	   
 	   -- SET SELECTOR AND SET SOURCE REGISTER AND SET DESTINATION REGISTER
 	   SE: ENTITY WORK.REG GENERIC MAP (2) PORT MAP (SIG_SEL, E_SEL, CLK, RST, Q_SEL);
