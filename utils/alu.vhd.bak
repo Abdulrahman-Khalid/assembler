@@ -67,7 +67,7 @@ architecture aluArch of alu is
 
         FTemp <= A when operationControl = OperationMOV
         else (others => '0') when (operationControl = OperationNOP or operationControl = OperationCLR)
-        else sigF when (operationControl = OperationADD or operationControl = OperationSUB 
+        else sigF when (operationControl = OperationADD or operationControl = OperationADC or operationControl = OperationSUB or operationControl = OperationSBC 
                         or operationControl = OperationCMP or operationControl = OperationINC 
                         or operationControl = OperationDEC)
         else (A and B) when operationControl = OperationAND

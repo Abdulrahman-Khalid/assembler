@@ -37,8 +37,8 @@ entity alu is
 end entity alu;
 
 architecture aluArch of alu is
-    signal sigA, sigB, sigF, subTowsCompB, sbcTowsCompB, sbcSigB, carryTwosComp: std_logic_vector(n-1 downto 0);
-    signal carryIn, carryOut, dummyCarryOut: std_logic;
+    signal sigA, sigB, sigF, subTowsCompB, sbcResult, carryTwosComp: std_logic_vector(n-1 downto 0);
+    signal carryIn, carryOut, sbcCarryOut: std_logic;
     signal FTemp: std_logic_vector(n-1 downto 0);
     constant ZEROS: std_logic_vector(n-1 downto 0):= (others=>'0');
     begin
@@ -46,8 +46,7 @@ architecture aluArch of alu is
         
         fAdder: entity work.nbitAdder generic map(n) port map(sigB, sigA, carryIn, sigF, carryOut);
         twosSUB: entity work.TwosComplement generic map(n) port map(B, subTowsCompB);
-        sbcB: entity work.nbitAdder generic map(n) port map(carryTwosComp, B, '0', sbcSigB, dummyCarryOut);
-        twosSBC: entity work.TwosComplement generic map(n) port map(sbcSigB, sbcTowsCompB);
+        sbcB: entity work.nbitAdder generic map(n) port map(carryTwosComp, sigF, '0', sbcResult, sbcCarryOut);
 
         carryTwosComp <= (others => '1') when flagIn(cFlag) = '1'
         else (others => '0');
@@ -55,8 +54,7 @@ architecture aluArch of alu is
         sigB <= A when operationControl = OperationSUB or operationControl = OperationCMP or operationControl = OperationSBC
         else B;
 
-        sigA <= subTowsCompB when operationControl = OperationSUB or operationControl = OperationCMP 
-        else sbcTowsCompB when operationControl = OperationSBC
+        sigA <= subTowsCompB when operationControl = OperationSUB or operationControl = OperationCMP or operationControl = OperationSBC
         else (others => '0') when operationControl = OperationINC
         else (others => '1') when operationControl = OperationDEC
         else A;
@@ -67,9 +65,10 @@ architecture aluArch of alu is
 
         FTemp <= A when operationControl = OperationMOV
         else (others => '0') when (operationControl = OperationNOP or operationControl = OperationCLR)
-        else sigF when (operationControl = OperationADD or operationControl = OperationSUB 
+        else sigF when (operationControl = OperationADD or operationControl = OperationADC or operationControl = OperationSUB 
                         or operationControl = OperationCMP or operationControl = OperationINC 
                         or operationControl = OperationDEC)
+        else sbcResult when operationControl = OperationSBC
         else (A and B) when operationControl = OperationAND
         else (A or B) when operationControl = OperationOR
         else (A xnor B) when operationControl = OperationXNOR
@@ -85,9 +84,10 @@ architecture aluArch of alu is
         
         --carry flag
         --if no op change zero flag happened flagOut(cFlag) = flagIn(cFlag)
-        flagOut(cFlag) <= carryOut  when (operationControl = OperationADD or operationControl = OperationSUB
+        flagOut(cFlag) <= carryOut  when (operationControl = OperationADD or operationControl = OperationADC or operationControl = OperationSUB
                                     or operationControl = OperationCMP or operationControl = OperationINC 
                                     or operationControl = OperationDEC)
+        else sbcCarryOut when operationControl = OperationSBC
         else B(0) when operationControl = OperationRRC or operationControl = OperationLSR or operationControl = OperationASR
         else B(n-1) when operationControl = OperationLSL or operationControl = OperationRLC
         else flagIn(cFlag);
