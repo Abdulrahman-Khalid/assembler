@@ -1,0 +1,281 @@
+E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/Main.vhd {0 {vcom -work work -2002 -explicit E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/Main.vhd
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity main
+-- Compiling architecture main_arch of main
+-- Loading entity Reg
+-- Loading entity operation_type
+-- Loading package NUMERIC_STD
+-- Loading entity fetch_registers
+** Error: E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/Main.vhd(39): Illegal architecture specification.
+-- Loading entity BIG_DECODER
+** Error: E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/Main.vhd(53): VHDL Compiler exiting
+
+} {12.0 13.0 14.0 15.0} {}} E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/Mux4.vhd {1 {vcom -work work -2002 -explicit E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/Mux4.vhd
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity Mux4
+-- Compiling architecture Mux4Arch of Mux4
+
+} {} {}} E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/Decoder.vhd {1 {vcom -work work -2002 -explicit E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/Decoder.vhd
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package MATH_REAL
+-- Loading package NUMERIC_STD
+-- Compiling entity Decoder
+-- Compiling architecture DecoderArch of Decoder
+
+} {} {}} E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/ORING.vhd {1 {vcom -work work -2002 -explicit E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/ORING.vhd
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity ORING
+-- Compiling architecture ORING_ARCH of ORING
+-- Loading entity TWO_OP0_ORING
+-- Loading entity TWO_OP1_ORING
+-- Loading entity A2_ORING
+-- Loading entity B4_ORING
+-- Loading entity D_ORING
+-- Loading entity TRI_STATE
+
+} {} {}} E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/first_mir.vhd {1 {vcom -work work -2002 -explicit E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/first_mir.vhd
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity first_mir
+-- Compiling architecture micro_ir of first_mir
+
+} {} {}} E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/2OP0_ORING.vhd {1 {vcom -work work -2002 -explicit E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/2OP0_ORING.vhd
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity TWO_OP0_ORING
+-- Compiling architecture TWO_OP0_ORING_ARCH of TWO_OP0_ORING
+
+} {} {}} E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/BIG_DECODER.vhd {1 {vcom -work work -2002 -explicit E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/BIG_DECODER.vhd
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity BIG_DECODER
+-- Compiling architecture BIG_DECODER_ARCH of BIG_DECODER
+-- Loading entity ORING
+-- Loading entity ROM
+-- Loading entity EXECUTE_MIR
+
+} {} {}} E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/TriState.vhd {1 {vcom -work work -2002 -explicit E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/TriState.vhd
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity TRI_STATE
+-- Compiling architecture A_TRI_STATE of TRI_STATE
+
+} {} {}} E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/2OP1_ORING.vhd {1 {vcom -work work -2002 -explicit E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/2OP1_ORING.vhd
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity TWO_OP1_ORING
+-- Compiling architecture TWO_OP1_ORING_ARCH of TWO_OP1_ORING
+
+} {} {}} E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/execute_f1.vhd {1 {vcom -work work -2002 -explicit E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/execute_f1.vhd
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity EXECUTE_F1
+-- Compiling architecture EXECUTE_F1_ARCH of EXECUTE_F1
+
+} {} {}} E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/EXECUTE_MIR.vhd {1 {vcom -work work -2002 -explicit E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/EXECUTE_MIR.vhd
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity EXECUTE_MIR
+-- Compiling architecture EXECUTE_MIR_ARCH of EXECUTE_MIR
+-- Loading entity EXECUTE_F1
+-- Loading entity EXECUTE_F2
+-- Loading entity EXECUTE_F3
+-- Loading entity EXECUTE_F4
+-- Loading entity EXECUTE_F6
+
+} {} {}} E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/alu.vhd {1 {vcom -work work -2002 -explicit E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/alu.vhd
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Loading package constants
+-- Compiling entity alu
+-- Compiling architecture aluArch of alu
+-- Loading entity NBitAdder
+-- Loading entity TwosComplement
+
+} {} {}} E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/EXECUTE_F2.vhd {1 {vcom -work work -2002 -explicit E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/EXECUTE_F2.vhd
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity EXECUTE_F2
+-- Compiling architecture EXECUTE_F2_ARCH of EXECUTE_F2
+
+} {} {}} E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/FullAdder.vhd {1 {vcom -work work -2002 -explicit E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/FullAdder.vhd
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity FullAdder
+-- Compiling architecture FullAdderArch of FullAdder
+
+} {} {}} E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/EXECUTE_F3.vhd {1 {vcom -work work -2002 -explicit E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/EXECUTE_F3.vhd
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity EXECUTE_F3
+-- Compiling architecture EXECUTE_F3_ARCH of EXECUTE_F3
+
+} {} {}} E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/EXECUTE_F4.vhd {1 {vcom -work work -2002 -explicit E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/EXECUTE_F4.vhd
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity EXECUTE_F4
+-- Compiling architecture EXECUTE_F4_ARCH of EXECUTE_F4
+
+} {} {}} E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/B4_ORING.vhd {1 {vcom -work work -2002 -explicit E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/B4_ORING.vhd
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity B4_ORING
+-- Compiling architecture B4_ORING_ARCH of B4_ORING
+
+} {} {}} E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/NBitAdder.vhd {1 {vcom -work work -2002 -explicit E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/NBitAdder.vhd
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity NBitAdder
+-- Compiling architecture NBitAdderArch of NBitAdder
+-- Loading entity FullAdder
+
+} {} {}} E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/check_and_change.vhd {1 {vcom -work work -2002 -explicit E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/check_and_change.vhd
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity check_and_change
+-- Compiling architecture checking of check_and_change
+
+} {} {}} E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/constants.vhd {1 {vcom -work work -2002 -explicit E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/constants.vhd
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling package constants
+
+} {} {}} E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/ROM.vhd {1 {vcom -work work -2002 -explicit E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/ROM.vhd
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity ROM
+-- Compiling architecture Behavioral of ROM
+
+} {} {}} E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/Reg.vhd {1 {vcom -work work -2002 -explicit E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/Reg.vhd
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity Reg
+-- Compiling architecture RegArch of Reg
+
+} {} {}} E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/EXECUTE_F6.vhd {1 {vcom -work work -2002 -explicit E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/EXECUTE_F6.vhd
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity EXECUTE_F6
+-- Compiling architecture EXECUTE_F6_ARCH of EXECUTE_F6
+
+} {} {}} E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/RAM.vhd {1 {vcom -work work -2002 -explicit E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/RAM.vhd
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity RAM
+-- Compiling architecture RAM_arch of RAM
+
+} {} {}} E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/TwosComplement.vhd {1 {vcom -work work -2002 -explicit E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/TwosComplement.vhd
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity TwosComplement
+-- Compiling architecture TwosComplementArch of TwosComplement
+-- Loading entity NBitAdder
+
+} {} {}} E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/return_data.vhd {1 {vcom -work work -2002 -explicit E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/return_data.vhd
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity return_data
+-- Compiling architecture checking of return_data
+
+} {} {}} E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/Fetch_registers.vhd {1 {vcom -work work -2002 -explicit E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/Fetch_registers.vhd
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity fetch_registers
+-- Compiling architecture my_fetch of fetch_registers
+
+} {} {}} E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/A2_ORING.vhd {1 {vcom -work work -2002 -explicit E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/A2_ORING.vhd
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity A2_ORING
+-- Compiling architecture A2_ORING_ARCH of A2_ORING
+
+} {} {}} E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/operation_type.vhd {1 {vcom -work work -2002 -explicit E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/operation_type.vhd
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity operation_type
+-- Compiling architecture op_type of operation_type
+
+} {} {}} E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/D_ORING.vhd {1 {vcom -work work -2002 -explicit E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/D_ORING.vhd
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity D_ORING
+-- Compiling architecture D_ORING_ARCH of D_ORING
+
+} {} {}} E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/Mux2.vhd {1 {vcom -work work -2002 -explicit E:/desktop_folders/CMP1/Third_year/Architecture/poject/sunday_last/Mux2.vhd
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity Mux2
+-- Compiling architecture Mux2Arch of Mux2
+
+} {} {}}
