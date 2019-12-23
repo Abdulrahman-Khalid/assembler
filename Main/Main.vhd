@@ -11,7 +11,7 @@ END main;
 ARCHITECTURE main_arch OF main IS
 	  SIGNAL TO_RAM,RD,WR : STD_LOGIC;
 	  SIGNAL SEL,NEW_SEL :STD_LOGIC_VECTOR(1 DOWNTO 0);
-	  SIGNAL M_IR,NEW_SRC,IR, R0 , R1, R2 ,R3, R4, R5, R6, R7 ,DEST, MDR, SRC :STD_LOGIC_VECTOR(15 DOWNTO 0); 
+	  SIGNAL M_IR,NEW_SRC, IR, R0 , R1, R2 ,R3, R4, R5, R6, R7 ,DEST, MDR, SRC :STD_LOGIC_VECTOR(15 DOWNTO 0); 
 	  SIGNAL ENAPLE_REGISTER: STD_LOGIC_VECTOR(7 DOWNTO 0);
 	  SIGNAL MAR : STD_LOGIC_VECTOR (12 DOWNTO 0);
 	  SIGNAL OUT_DEC_SRC,OUT_DEC_DST : STD_LOGIC_VECTOR (7 DOWNTO 0);
@@ -33,7 +33,8 @@ ARCHITECTURE main_arch OF main IS
 	   
 	   --DEC_REG_DIR_SRC : DECODER GENERIC MAP (3) PORT MAP (IR(8 DOWNTO 6), OUT_DEC_SRC);
 	   DEC_REG_DIR_DST : DECODER GENERIC MAP (3) PORT MAP (IR(2 DOWNTO 0), ENAPLE_REGISTER);
-	    
+	   
+	   irReg: ENTITY WORK.REG GENERIC MAP (16) PORT MAP (BUS_DATA, EXE(irIn), CLK, RST, IR);
 	   u0: ENTITY WORK.REG GENERIC MAP (16) PORT MAP (BUS_DATA, ENAPLE_REGISTER(0), CLK, RST, R0);
 	   u1: ENTITY WORK.REG GENERIC MAP (16) PORT MAP (BUS_DATA, ENAPLE_REGISTER(1), CLK, RST, R1); 
 	   u2: ENTITY WORK.REG GENERIC MAP (16) PORT MAP (BUS_DATA, ENAPLE_REGISTER(2), CLK, RST, R2);
@@ -41,11 +42,12 @@ ARCHITECTURE main_arch OF main IS
 	   u4: ENTITY WORK.REG GENERIC MAP (16) PORT MAP (BUS_DATA, ENAPLE_REGISTER(4), CLK, RST, R4);
 	   u5: ENTITY WORK.REG GENERIC MAP (16) PORT MAP (BUS_DATA, ENAPLE_REGISTER(5), CLK, RST, R5);
 	   u6: ENTITY WORK.REG GENERIC MAP (16) PORT MAP (BUS_DATA, ENAPLE_REGISTER(6), CLK, RST, R6);
-	   u7: ENTITY WORK.REG GENERIC MAP (16) PORT MAP (BUS_DATA, ENAPLE_REGISTER(7), CLK, RST, R7);  
+	   u7: ENTITY WORK.REG GENERIC MAP (16) PORT MAP (BUS_DATA, EXE(pcIn), CLK, RST, R7);  
 	   
 	   
 	   mirReg: ENTITY WORK.REG GENERIC MAP (16) PORT MAP (, ENAPLE_REGISTER(7), CLK, RST, R7);  
 	   
+
 	   FR : ENTITY WORK.FETCH_REGISTERS PORT MAP(IR,R0,R1,R2,R3,R4,R5,R6,R7,Q_SEL,DEST);
 	   -- regDst: ENTITY WORK.REG GENERIC MAP (16) PORT MAP (DEST, , CLK, RST, BUS_DATA);  	   
 	   OT : ENTITY WORK.OPERATION_TYPE PORT MAP(IR,SEL);
@@ -59,7 +61,7 @@ ARCHITECTURE main_arch OF main IS
 	   yReg: ENTITY WORK.REG GENERIC MAP (16) PORT MAP (BUS_DATA, EXE(yIn), CLK, RST, yRegOut);  
 	   flagReg: ENTITY WORK.REG GENERIC MAP (16) PORT MAP (flagRegIn, '1', not(CLK), RST, flagRegOut);  
 	   alu0: entity work.alu generic map(16,5) port map(operationCode, BUS_DATA, yRegOut, aluResult,flagRegOut(flagsCount-1 downto 0), flagRegIn(flagsCount-1 downto 0));
-	   zReg: ENTITY WORK.REG GENERIC MAP (16) PORT MAP (aluResult, '1', not(CLK), RST, zRegOut);  
+	   zReg: ENTITY WORK.REG GENERIC MAP (16) PORT MAP (aluResult, EXE(zIn), not(CLK), RST, zRegOut);  
 	   
 	   --ram --mar_out --mem_to_mdr --mdr_out
 	   marReg: ENTITY WORK.REG GENERIC MAP (16) PORT MAP(BUS_DATA, EXE(marIn), CLK, RST, mar_out);  
@@ -69,7 +71,7 @@ ARCHITECTURE main_arch OF main IS
 	   -- SET SELECTOR AND SET SOURCE REGISTER 
 	   SE: ENTITY WORK.REG GENERIC MAP (2) PORT MAP (SIG_SEL, E_SEL, CLK, RST, Q_SEL);
        SR: ENTITY WORK.REG GENERIC MAP (16) PORT MAP (SIG_SRC, E_SRC, CLK, RST, Q_SRC);  
- 	     
+ 	-- dst: ENTITY WORK.REG GENERIC MAP (16) PORT MAP ();
      SIG_SEL <= SEL WHEN M_IR(15 DOWNTO 11) = "01010" ELSE
                 NEW_SEL WHEN M_IR(15 DOWNTO 11) = "11000" ELSE
                 Q_SEL;
@@ -78,7 +80,7 @@ ARCHITECTURE main_arch OF main IS
      
      SIG_SRC <= NEW_SRC WHEN Q_SEL = "10" AND M_IR(15 DOWNTO 11) = "11000" ELSE
                 Q_SRC;
-     E_SRC <= '1' WHEN Q_SEL = "10" AND M_IR(15 DOWNTO 11) = "11000" ELSE
+     E_SRC <= '1' WHEN (Q_SEL = "10" AND M_IR(15 DOWNTO 11) = "11000") or EXE(srcIn) = '1' ELSE
               '0';
 	   
 	   --tristates out to bus
@@ -86,8 +88,7 @@ ARCHITECTURE main_arch OF main IS
 	   tristatePC: entity work.TriStateGeneric GENERIC MAP (16) port map(R7,EXE(pcOut),BUS_DATA); 
 	   tristateZ: entity work.TriStateGeneric GENERIC MAP (16) port map(zRegOut,EXE(zOut),BUS_DATA);   
 	   tristateMDR: entity work.TriStateGeneric GENERIC MAP (16) port map(mdr_out,EXE(mdrOut),BUS_DATA);  
-	   tristateSRC: entity work.TriStateGeneric GENERIC MAP (16) port map(Q_SRC,EXE(srcOut),BUS_DATA);   
-		--    constant pcIn: integer := 9;
-		--    constant irIn: integer := 10;
-		--    constant zIn: integer := 11;
+	   tristateSRC: entity work.TriStateGeneric GENERIC MAP (16) port map(Q_SRC,EXE(srcOut),BUS_DATA);
+
+	   --constant dstIn: integer := 19;
 END main_arch;
