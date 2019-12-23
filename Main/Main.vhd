@@ -24,7 +24,7 @@ ARCHITECTURE main_arch OF main IS
 	  --operation_code
 	  signal yRegOut:std_logic_vector(16,0);
 	  signal operationCode:std_logic_vector(4 downto 0);
-	  signal flagRegIn, flagRegOut, aluResult, zRegOut,: std_logic_vector(16 downto 0);
+	  signal flagRegIn, flagRegOut, aluResult, zRegOut, mar_out ,mem_to_mdr ,mdr_out: std_logic_vector(16 downto 0);
 	BEGIN
 	   
 	   --DEC_REG_DIR_SRC : DECODER GENERIC MAP (3) PORT MAP (IR(8 DOWNTO 6), OUT_DEC_SRC);
@@ -60,4 +60,8 @@ ARCHITECTURE main_arch OF main IS
 	   zReg: ENTITY WORK.REG GENERIC MAP (16) PORT MAP (aluResult, '1', not(CLK), RST, zRegOut);  
 	   tristateZ: entity work.TriStateGeneric GENERIC MAP (16) port map(zRegOut,EXE(),BUS_DATA);   
 	   
+	   --ram --mar_out --mem_to_mdr --mdr_out
+	   marReg: ENTITY WORK.REG GENERIC MAP (16) PORT MAP(BUS_DATA, EXE(MARin), CLK, RST, mar_out);  
+	   mdrReg: ENTITY WORK.MDR GENERIC MAP (16) PORT MAP(Clk,RST, EXE(MDRin), EXE(wr), mem_to_mdr, BUS_DATA, mdr_out);  
+	   ram0: entity work.ram port map (EXE(wr), EXE(rd), mar_out(11 downto 0), mdr_out, mem_to_mdr);
 	   END main_arch;
