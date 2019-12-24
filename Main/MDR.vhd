@@ -7,8 +7,6 @@ ENTITY MDR IS
 END MDR;
 
 ARCHITECTURE ARCH_MDR OF MDR IS
-signal mdr_in: std_logic_vector(n-1 DOWNTO 0);
-signal Z: std_logic_vector(n - 1 DOWNTO 0):=(others=>'Z');
 BEGIN
     PROCESS(Clk, RST, enBusWrite, enReadFromMem, mem_to_mdr, bus_to_mdr)
     BEGIN
@@ -16,7 +14,7 @@ BEGIN
             mdr_out <= (others=>'0');
         ELSIF clk'EVENT AND clk='1' AND enBusWrite='1' THEN
             mdr_out <= bus_to_mdr;
-        ELSIF enReadFromMem = '1' THEN
+        ELSIF enReadFromMem'EVENT THEN
             mdr_out <= mem_to_mdr;
         END IF;
     END PROCESS;
