@@ -108,7 +108,7 @@ ARCHITECTURE main_arch OF main IS
 	   
 	   --tristates out to bus
 	   tristateRegDst: entity work.TriStateGeneric GENERIC MAP (16) port map(DEST,EXE(dstOut),BUS_DATA); 
-	   tristatePC: entity work.TriStateGeneric GENERIC MAP (16) port map(R7,EXE(pcOut),BUS_DATA); 
+	   tristatePC: entity work.TriStateGeneric GENERIC MAP (16) port map(Q_R7,EXE(pcOut),BUS_DATA); 
 	   tristateZ: entity work.TriStateGeneric GENERIC MAP (16) port map(zRegOut,EXE(zOut),BUS_DATA);   
 	   tristateMDR: entity work.TriStateGeneric GENERIC MAP (16) port map(mdr_out,EXE(mdrOut),BUS_DATA);  
 	   tristateSRC: entity work.TriStateGeneric GENERIC MAP (16) port map(Q_SRC,EXE(srcOut),BUS_DATA);
