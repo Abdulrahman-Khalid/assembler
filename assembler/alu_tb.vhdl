@@ -8,11 +8,6 @@ entity alu_tb is
 end entity;
 
 architecture tb of alu_tb is
-    constant OperationSUB: std_logic_vector(4 downto 0) :=  "00010";
-    constant OperationCMP: std_logic_vector(4 downto 0) :=  "10100";
-    constant OperationADC: std_logic_vector(4 downto 0) :=  "00011";
-    constant OperationSBC: std_logic_vector(4 downto 0) :=  "00100";
-
     constant CLK_FREQ : integer := 100e6; -- 100 MHz
     constant CLK_PER  : time    := 1000 ms / CLK_FREQ;
     constant operationCodeBits:integer := 5;
@@ -30,7 +25,7 @@ begin
     clk <= not clk after CLK_PER / 2;
     alu : entity work.alu generic map(n => bitsNum, m => operationCodeBits) port map (operationControl => operationControl,a => A, b => B, f => F, flagIn => flagIn, flagOut => flagOut);
     
-    f <= (others => 'Z');
+    f <= (others => 'X');
     process
     begin
         -------------NOP-----------------
@@ -372,6 +367,57 @@ begin
         flagResult:="10101";
         assert (flagResult = flagOut and result= F ) report "sub case5  ---flag =   " & to_string(flagOut) & "--- output = "&to_string(F) &"  not equal to expected flag "& to_string(flagResult)&" output ="&to_string(result)  severity error;
 
+        ------------------------------- CMP -------------------------------
+        --- a-b
+        --p o n z c (flags)
+        --- case 1 (odrinary two positive numbers with no cary )
+        a <= x"0010"; 
+        b <= x"0001"; -- not importnat 
+        flagIn<="XXXXX";
+        Operation <=OperationCMP;               
+        wait for CLK_PER;
+        result :=x"000F"  ;
+        flagResult:="00001";
+        assert (flagResult = flagOut and result= F ) report "cmp case1  ---flag =   " & to_string(flagOut) & "--- output = "&to_string(F) &"  not equal to expected flag "& to_string(flagResult)&" output ="&to_string(result)  severity error;
+
+        --- case 2 (positive - negative )
+        a <= x"0010"; 
+        b <= x"FFFF";  
+        flagIn<="XXXXX";
+        Operation <= OperationCMP;               
+        wait for CLK_PER;
+        result :=x"0011"  ;
+        flagResult:="00000";
+        assert (flagResult = flagOut and result= F ) report "cmp case2  ---flag =   " & to_string(flagOut) & "--- output = "&to_string(F) &"  not equal to expected flag "& to_string(flagResult)&" output ="&to_string(result)  severity error;
+
+        ----- case 3 ( negative - negative =0 )
+        a <= x"FFFF"; 
+        b <= x"FFFF";  
+        flagIn<="XXXXX";
+        Operation <= OperationCMP;               
+        wait for CLK_PER;
+        result :=x"0000"  ;
+        flagResult:="10011";
+        assert (flagResult = flagOut and result= F ) report "cmp case3  ---flag =   " & to_string(flagOut) & "--- output = "&to_string(F) &"  not equal to expected flag "& to_string(flagResult)&" output ="&to_string(result)  severity error;
+
+        ----- case 4 ( negative - negative = positive )
+        a <= x"FFFF"; 
+        b <= x"F325";  
+        flagIn<="XXXXX";
+        Operation <= OperationCMP;               
+        wait for CLK_PER;
+        result :=x"0CDA"  ;
+        flagResult:="10001";
+        assert (flagResult = flagOut and result= F ) report "cmp case4  ---flag =   " & to_string(flagOut) & "--- output = "&to_string(F) &"  not equal to expected flag "& to_string(flagResult)&" output ="&to_string(result)  severity error;
+        ----- case 5 ( negative - positive = negative )
+        a <= x"FFFF"; 
+        b <= x"0003";  
+        flagIn<="XXXXX";
+        Operation <= OperationCMP;               
+        wait for CLK_PER;
+        result :=x"FFFC"  ;
+        flagResult:="10101";
+        assert (flagResult = flagOut and result= F ) report "cmp case5  ---flag =   " & to_string(flagOut) & "--- output = "&to_string(F) &"  not equal to expected flag "& to_string(flagResult)&" output ="&to_string(result)  severity error;
 
         wait;
     end process;

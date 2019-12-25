@@ -1,6 +1,6 @@
 # TO TRY CODE:
 # python run.py (directory of files) (code file .asm file) (memory I want to write the code in file .mem) (debug file which has some visual data .txt)
-# e.g: python run.py ./ test.asm  out.mem debug.txt
+# e.g: python run.py ./test.asm ./out.mem ./debug.txt
 import sys
 import re
 bitsNum = 16
@@ -26,14 +26,16 @@ def over_write_memory(memoryTuples, outputMemFile):
     outputMemFile.writelines(data)
     outputMemFile.truncate()
 
-def generate_empty_memory(memFile):    
+
+def generate_empty_memory(memFile):
     init = 0
     to = 2**12
     with open(memFile, "a+") as f:
         if(init == 0):
-            f.writelines("// Do not edit the following lines\n// instance=\n// format=mti addressradix=h dataradix=b version=1.0 wordsperline=1\n")
+            f.writelines(
+                "// Do not edit the following lines\n// instance=\n// format=mti addressradix=h dataradix=b version=1.0 wordsperline=1\n")
         for i in range(init, to):
-            f.writelines(hex(i)[2:].zfill(3)+": "+ "X"*bitsNum+"\n")
+            f.writelines(hex(i)[2:].zfill(3)+": " + "X"*bitsNum+"\n")
 
 
 def load_codes():
@@ -127,7 +129,8 @@ def check_syntax_error(instructionAddress, instruction, debugLines, instructionN
                     offest = addressNested - newAddress
                     break
                 elif(re.match(org, instructions[i][1], flags=0)):
-                    addressNested = int((instructions[i][1].split())[1], bitsNum)
+                    addressNested = int(
+                        (instructions[i][1].split())[1], bitsNum)
                 elif(flag):
                     addressNested += 1
         if(offest == -1):
@@ -137,7 +140,7 @@ def check_syntax_error(instructionAddress, instruction, debugLines, instructionN
         if(offest > -1):
             code = branchOp[operation] + offestCode
         else:
-            code = branchOp[operation] + bin(offest+(1<<8))[2:]
+            code = branchOp[operation] + bin(offest+(1 << 8))[2:]
         if(len(code) == bitsNum):
             debugLines.append((instruction, "1op", instructionAddress, code))
         else:
@@ -250,7 +253,8 @@ def compile_code(lines, debug):
     debug.writelines(
         "----------------------------- START INSTUCTION INFORMATION LIST -----------------------------\n")
     for debugLine in debugLines:
-        debug.writelines("(instruction = {}) (instruction type = {}) (address in hex = {}) (instruction code = {})\n".format(debugLine[0],debugLine[1],hex(debugLine[2]).zfill(3),debugLine[3]))
+        debug.writelines("(instruction = {}) (instruction type = {}) (address in hex = {}) (instruction code = {})\n".format(
+            debugLine[0], debugLine[1], hex(debugLine[2]).zfill(3), debugLine[3]))
     debug.writelines(
         "----------------------------- END INSTUCTION INFORMATION LIST -------------------------------\n")
     # check if there is a Syntax Error:
@@ -260,13 +264,12 @@ def compile_code(lines, debug):
 
 
 def main():
-    if (len(sys.argv) != 5):
+    if (len(sys.argv) != 4):
         print("Wrong number of parameters")
         sys.exit()
-    workingDir = sys.argv[1]
-    inputFile = workingDir + sys.argv[2]
-    outputFile = workingDir + sys.argv[3]
-    debugFile = workingDir + sys.argv[4]
+    inputFile = sys.argv[1]
+    outputFile = sys.argv[2]
+    debugFile = sys.argv[3]
     load_codes()
     print("Input File: {}, Output File: {}, Debug File: {}".format(
         inputFile, outputFile, debugFile))
