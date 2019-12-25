@@ -52,11 +52,11 @@ architecture aluArch of alu is
         else (others => '0');
         
         sigB <= A when operationControl = OperationSUB or operationControl = OperationCMP or operationControl = OperationSBC
+        else (others => '0') when operationControl = OperationINC
+        else (others => '1') when operationControl = OperationDEC
         else B;
 
         sigA <= subTowsCompB when operationControl = OperationSUB or operationControl = OperationCMP or operationControl = OperationSBC
-        else (others => '0') when operationControl = OperationINC
-        else (others => '1') when operationControl = OperationDEC
         else A;
 
         carryIn <= flagIn(cFlag) when operationControl = OperationADC
@@ -72,14 +72,14 @@ architecture aluArch of alu is
         else (A and B) when operationControl = OperationAND
         else (A or B) when operationControl = OperationOR
         else (A xnor B) when operationControl = OperationXNOR
-        else (B(0) & B(n-1 downto 1)) when operationControl = OperationROR 
-        else (flagIn(cFlag) & B(n-1 downto 1)) when operationControl = OperationRRC
-        else (B(n-2 downto 0) & B(n-1)) when operationControl = OperationROL
-        else (B(n-2 downto 0) & flagIn(cFlag)) when operationControl = OperationRLC
-        else not(B) when operationControl = OperationINV
-        else (B(n-2 downto 0) & '0') when operationControl = OperationLSL
-        else ('0' & B(n-1 downto 1)) when operationControl = OperationLSR
-        else (B(n-1) & B(n-1 downto 1)) when operationControl = OperationASR
+        else (A(0) & A(n-1 downto 1)) when operationControl = OperationROR 
+        else (flagIn(cFlag) & A(n-1 downto 1)) when operationControl = OperationRRC
+        else (A(n-2 downto 0) & A(n-1)) when operationControl = OperationROL
+        else (A(n-2 downto 0) & flagIn(cFlag)) when operationControl = OperationRLC
+        else not(A) when operationControl = OperationINV
+        else (A(n-2 downto 0) & '0') when operationControl = OperationLSL
+        else ('0' & A(n-1 downto 1)) when operationControl = OperationLSR
+        else (A(n-1) & A(n-1 downto 1)) when operationControl = OperationASR
         else (others => 'Z');
         
         --carry flag
@@ -88,8 +88,8 @@ architecture aluArch of alu is
                                     or operationControl = OperationCMP or operationControl = OperationINC 
                                     or operationControl = OperationDEC)
         else sbcCarryOut when operationControl = OperationSBC
-        else B(0) when operationControl = OperationRRC or operationControl = OperationLSR or operationControl = OperationASR
-        else B(n-1) when operationControl = OperationLSL or operationControl = OperationRLC
+        else A(0) when operationControl = OperationRRC or operationControl = OperationLSR or operationControl = OperationASR
+        else A(n-1) when operationControl = OperationLSL or operationControl = OperationRLC
         else flagIn(cFlag);
 
         --zero flag
