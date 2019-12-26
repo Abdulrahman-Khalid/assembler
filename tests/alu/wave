@@ -1,0 +1,5 @@
+#!/bin/bash
+set -eu
+UNIT=$1
+x11docker -- -v `pwd`:`pwd` -w `pwd` -- ghdl/ext gtkwave `pwd`/out/waves/${UNIT}.vcd
+
