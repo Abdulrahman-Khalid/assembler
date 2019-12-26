@@ -45,39 +45,40 @@ package constants is
     constant OFlag: integer :=3; --overflow flag
     constant pFlag: integer :=4; --parity flag
     --23 EXE signals
-    --F1 -- 0 no trans
-    constant pcOut: integer := 1;
-    constant mdrOut: integer := 2;
-    constant zOut: integer := 3;
-    constant srcOut: integer := 4;
-    constant dstOut: integer := 5;
-    -- 6,7 not used
-    --F2 -- 8 no trans 
-    constant pcIn: integer := 9;
-    constant irIn: integer := 10;
-    constant zIn: integer := 11;
-    --F3 --12 no trans
-    constant marIn: integer := 13;
-    constant mdrIn: integer := 14;
-    --15 not used
-    --F4 --16 no trans
-    constant yIn: integer := 17;
-    constant srcIn: integer := 18;
-    constant dstIn: integer := 19;
-    --F6 --20 no trans
-    constant exeRead: integer := 21;
-    constant exeWrite: integer := 22;
-    --23 not used
+     --F6 --0 no trans
+    constant exeRead: integer := 1;
+    constant exeWrite: integer := 2;
+    --3 not used
+    --F4 --4 no trans
+    constant yIn: integer := 5;
+    constant srcIn: integer := 6;
+    constant dstIn: integer := 7;
+    --F3 --8 no trans
+    constant marIn: integer := 9;
+    constant mdrIn: integer := 10;
+    --11 not used
+    --F2 -- 12 no trans 
+    constant pcIn: integer := 13;
+    constant irIn: integer := 14;
+    constant zIn: integer := 15;
     
+    --F1 -- 16 no trans
+    constant pcOut: integer := 17;
+    constant mdrOut: integer := 18;
+    constant zOut: integer := 19;
+    constant srcOut: integer := 20;
+    constant dstOut: integer := 21;
+    -- 22,23 not used
+        
     --ADDRESSES
-    constant A0_NEXT: std_logic_vector(4 downto 0) :=  "01011";
-    constant B0_NEXT: std_logic_vector(4 downto 0) :=  "01101";
-    constant B3_NEXT: std_logic_vector(4 downto 0) :=  "10000";
-    constant F0_NEXT: std_logic_vector(4 downto 0) :=  "10001";
-    constant G0_NEXT: std_logic_vector(4 downto 0) :=  "10010";
-    constant I1_NEXT: std_logic_vector(4 downto 0) :=  "10100";
-    constant OP2_1_NEXT: std_logic_vector(4 downto 0) :=  "10111";
-    constant OP1_0_NEXT: std_logic_vector(4 downto 0) :=  "10101";
+    constant A0_NEXT: std_logic_vector(4 downto 0) :=  "00000";
+    constant B0_NEXT: std_logic_vector(4 downto 0) :=  "00001";
+    constant B3_NEXT: std_logic_vector(4 downto 0) :=  "01111";
+    constant F0_NEXT: std_logic_vector(4 downto 0) :=  "00010";
+    constant G0_NEXT: std_logic_vector(4 downto 0) :=  "00011";
+    constant I1_NEXT: std_logic_vector(4 downto 0) :=  "10011";
+    constant OP2_1_NEXT: std_logic_vector(4 downto 0) :=  "10110";
+    constant OP1_0_NEXT: std_logic_vector(4 downto 0) :=  "00110";
 
     --OPCODES
     constant MOV_OPCODE: std_logic_vector(3 downto 0) :=  "0001";	
