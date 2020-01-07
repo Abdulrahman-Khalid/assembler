@@ -4,8 +4,9 @@
 .ORG 1e     //comment
 inc R1
 label2:
-add r0,#4
+add r0,#4 // comment here
 cmp r0,r3
+.org 30
 Beq label2   
 V .word 13e    
 Br label1   //31 br rqm => 31 + (rqm) = 35

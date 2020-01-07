@@ -18,13 +18,18 @@ def over_write_memory(memoryTuples, outputMemFile):
     memBitsNum = bitsNum
     data = outputMemFile.readlines()
     outputMemFile.seek(0)
-    lineLength = len(data[memoryStartIndex])
-    for instructionAddress, opCode in memoryTuples:
-        data[instructionAddress+memoryStartIndex] = data[instructionAddress +
-                                                         memoryStartIndex][0:lineLength-(memBitsNum+1)]+opCode+'\n'
-        print(data[instructionAddress+memoryStartIndex])
-    outputMemFile.writelines(data)
-    outputMemFile.truncate()
+
+    if(len(data) > memoryStartIndex):
+        lineLength = len(data[memoryStartIndex])
+        for instructionAddress, opCode in memoryTuples:
+            data[instructionAddress+memoryStartIndex] = data[instructionAddress +
+                                                             memoryStartIndex][0:lineLength-(memBitsNum+1)]+opCode+'\n'
+            # print(data[instructionAddress+memoryStartIndex])
+        outputMemFile.writelines(data)
+        outputMemFile.truncate()
+        print("Successful Run")
+    else:
+        print("Failed Run")
 
 
 def generate_empty_memory(memFile):
@@ -43,35 +48,35 @@ def load_codes():
         for line in f:
             line = re.sub(' +', ' ', line)
             line = line.replace("\n", '')
-            key, space, val = line.partition(' ')
+            key, _, val = line.partition(' ')
             oneOp[key] = val
 
     with open("./imports/branch_operand.txt") as f:
         for line in f:
             line = re.sub(' +', ' ', line)
             line = line.replace("\n", '')
-            key, space, val = line.partition(' ')
+            key, _, val = line.partition(' ')
             branchOp[key] = val
 
     with open("./imports/two_operand.txt") as f:
         for line in f:
             line = re.sub(' +', ' ', line)
             line = line.replace("\n", '')
-            key, space, val = line.partition(' ')
+            key, _, val = line.partition(' ')
             twoOp[key] = val
 
     with open("./imports/no_operand.txt") as f:
         for line in f:
             line = re.sub(' +', ' ', line)
             line = line.replace("\n", '')
-            key, space, val = line.partition(' ')
+            key, _, val = line.partition(' ')
             noOp[key] = val
 
     with open("./imports/src_dst.txt") as f:
         for line in f:
             line = re.sub(' +', ' ', line)
             line = line.replace("\n", '')
-            key, space, val = line.partition(' ')
+            key, _, val = line.partition(' ')
             reg[key] = val
 
 
@@ -242,10 +247,10 @@ def compile_code(lines, debug):
         try:
             instructionAddress = check_syntax_error(
                 instructionAddress, instructionTuple[1], debugLines, instructionNum, instructions)
-        except ValueError as err:
-            print("\nERROR in line: {}, code instruction: {}\n".format(
-                instructionTuple[0], instructionTuple[1]))
-            sys.exit()
+        except ValueError:
+            print("Error in line: {}, code instruction: {}".format(
+                instructionTuple[0]+1, instructionTuple[1]))
+            # sys.exit()
 
     debug.writelines(
         "----------------------------- END CODE -------------------------------\n")
@@ -289,5 +294,5 @@ def main():
         sys.exit()
 
 
-main()
+# main()
 # generate_empty_memory("./original.mem")

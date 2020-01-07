@@ -1,2 +1,2 @@
-mov R4,R2
+inc R1
 HLT
