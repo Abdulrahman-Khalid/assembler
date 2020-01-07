@@ -194,6 +194,7 @@ if __name__ == "__main__":
     load_codes()
     root = tk.Tk()
     gui = GUI(root)
+    root.title("Assembler")
     assembler = Assembler()
     gui.setAssembler(assembler)
     gui.pack(side="top", fill="both", expand=True)

@@ -78,7 +78,7 @@ def showAbout():
 
 def showHelp():
     messagebox.showinfo(
-        "Help", "1. Write or open your assembly program\n2. Choose ram file (.mem) from Ram menu\n3.Click compile and run button to modify RAM file")
+        "Help", "1. Write or open your assembly program\n2. Choose ram file (.mem) from Options menu\n3.Click compile or compile and run button from Run menu")
 
 
 def chooseDebugDirectory(assemblerObj):

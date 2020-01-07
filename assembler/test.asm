@@ -1,5 +1,4 @@
 // COMMENT
-//#########################
 
 .ORG 1e     //comment
 inc R1
