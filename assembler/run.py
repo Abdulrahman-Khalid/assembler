@@ -232,6 +232,10 @@ def check_syntax_error(instructionAddress, instruction, debugLines, instructionN
 
 
 def compile_code(lines, debug):
+    # reset labels and variables first
+    labels.clear()
+    variables.clear()
+
     isFailed = False
     instructions = []
     debug.writelines(
