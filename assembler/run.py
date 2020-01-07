@@ -232,13 +232,14 @@ def check_syntax_error(instructionAddress, instruction, debugLines, instructionN
     return newAddress
 
 
-def compile_code(lines, debug):
+def compile_code(lines, debugFileDir):
     # reset labels and variables first
     labels.clear()
     variables.clear()
 
     isFailed = False
     instructions = []
+    debug = open(debugFileDir, "w")
     debug.writelines(
         "----------------------------- START CODE -----------------------------\n")
     # remove all white spaces and comments
@@ -250,6 +251,9 @@ def compile_code(lines, debug):
         if (instruction != ''):
             instructions.append((lineNum, instruction.lower()))
             debug.writelines(instruction.lower()+'\n')
+    # if there is hlt at the end of the program just add it
+    if(instructions[-1][1] != "hlt"):
+        instructions.append((instructions[-1][0]+1, "hlt"))
     for instructionNum, instructionTuple in enumerate(instructions):
         try:
             instructionAddress = check_syntax_error(
@@ -258,7 +262,6 @@ def compile_code(lines, debug):
             isFailed = True
             print("Error in line: {} with instruction: {}".format(
                 instructionTuple[0]+1, instructionTuple[1]))
-            # sys.exit()
     debug.writelines(
         "----------------------------- END CODE -------------------------------\n")
     debugLines.sort(key=lambda tup: tup[2])
@@ -269,6 +272,7 @@ def compile_code(lines, debug):
             debugLine[0], debugLine[1], hex(debugLine[2]).zfill(3), debugLine[3]))
     debug.writelines(
         "----------------------------- END INSTUCTION INFORMATION LIST -------------------------------\n")
+    debug.close()
     # check if there is a Syntax Error:
     # (address in decimal, instruction code)
     if(isFailed):

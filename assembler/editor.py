@@ -173,7 +173,7 @@ class GUI(tk.Frame):
 class Assembler:
     def __init__(self):
         self.ramFile = ""
-        self.debugFile = open("./debug.txt", 'w')
+        self.debugFile = "./debug.txt"
 
     def setRamFile(self, ramFile):
         self.ramFile = ramFile
@@ -188,10 +188,6 @@ class Assembler:
 
     def getRamFile(self):
         return self.ramFile
-
-    def __del__(self):
-        if(self.debugFile):
-            self.debugFile.close()
 
 
 if __name__ == "__main__":

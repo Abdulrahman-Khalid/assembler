@@ -86,7 +86,7 @@ def chooseDebugDirectory(assemblerObj):
         initialdir="./", title="Select debug file directory")
 
     if(debugLocation):
-        assemblerObj.setDebugFile(open(debugLocation+"/debug.txt", "w"))
+        assemblerObj.setDebugFile(debugLocation+"/debug.txt")
 
 
 def chooseRamFile(assemblerObj):
