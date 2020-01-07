@@ -13,9 +13,10 @@ labels = {}
 variables = {}  # have key => variable name, value => address of value of the variable
 
 
-def over_write_memory(memoryTuples, outputMemFile):
+def over_write_memory(memoryTuples, ramFilePath):
     memoryStartIndex = 3
     memBitsNum = bitsNum
+    outputMemFile = open(ramFilePath, "r+")
     data = outputMemFile.readlines()
     outputMemFile.seek(0)
 
@@ -231,6 +232,7 @@ def check_syntax_error(instructionAddress, instruction, debugLines, instructionN
 
 
 def compile_code(lines, debug):
+    isFailed = False
     instructions = []
     debug.writelines(
         "----------------------------- START CODE -----------------------------\n")
@@ -248,10 +250,10 @@ def compile_code(lines, debug):
             instructionAddress = check_syntax_error(
                 instructionAddress, instructionTuple[1], debugLines, instructionNum, instructions)
         except ValueError:
+            isFailed = True
             print("Error in line: {}, code instruction: {}".format(
                 instructionTuple[0]+1, instructionTuple[1]))
             # sys.exit()
-
     debug.writelines(
         "----------------------------- END CODE -------------------------------\n")
     debugLines.sort(key=lambda tup: tup[2])
@@ -264,6 +266,8 @@ def compile_code(lines, debug):
         "----------------------------- END INSTUCTION INFORMATION LIST -------------------------------\n")
     # check if there is a Syntax Error:
     # (address in decimal, instruction code)
+    if(isFailed):
+        return False
     memoryTuples = [(x[-2], x[-1]) for x in debugLines]
     return memoryTuples
 
@@ -284,7 +288,8 @@ def main():
         debug = open(debugFile, 'w')
         output = open(outputFile, "r+")
         memoryTuples = compile_code(lines, debug)
-        over_write_memory(memoryTuples, output)
+        if(memoryTuples):
+            over_write_memory(memoryTuples, output)
         print("FINISHED!")
         f.close()
         output.close()

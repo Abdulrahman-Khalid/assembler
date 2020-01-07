@@ -13,15 +13,18 @@ def compileOnly(gui, assembler):
 
 
 def compileAndRun(gui, assembler):
-    ram = assembler.getRamFile()
-    print(ram)
-    if(ram):
-        over_write_memory(compileOnly(gui, assembler), ram)
+    ramFileDir = assembler.getRamFile()
+    if(ramFileDir):
+        memoryTuples = compileOnly(gui, assembler)
+        if(memoryTuples):
+            over_write_memory(memoryTuples, ramFileDir)
     else:
         if(tk.messagebox.askokcancel("Warnnig", "Choose your RAM file before running your code")):
             if(utils.chooseRamFile(assembler)):
-                over_write_memory(compileOnly(gui, assembler),
-                                  assembler.getRamFile())
+                ramFileDir = assembler.getRamFile()
+                memoryTuples = compileOnly(gui, assembler)
+                if(memoryTuples):
+                    over_write_memory(memoryTuples, ramFileDir)
             else:
                 print("Error: choose your RAM file before running")
         else:
@@ -169,11 +172,11 @@ class GUI(tk.Frame):
 
 class Assembler:
     def __init__(self):
-        self.ramFile = None
+        self.ramFile = ""
         self.debugFile = open("./debug.txt", 'w')
 
     def setRamFile(self, ramFile):
-        self.ramFile = open(ramFile, 'r+')
+        self.ramFile = ramFile
 
     def setDebugFile(self, debugFile):
         if(self.debugFile):
@@ -187,8 +190,6 @@ class Assembler:
         return self.ramFile
 
     def __del__(self):
-        if(self.ramFile):
-            self.ramFile.close()
         if(self.debugFile):
             self.debugFile.close()
 
