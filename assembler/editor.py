@@ -102,7 +102,7 @@ class GUI(tk.Frame):
 
         self.console = CustomText(self)
         self.vsbConsole = tk.Scrollbar(command=self.console.yview)
-        self.console.configure(yscrollcommand=self.vsb.set, state=tk.DISABLED,
+        self.console.configure(yscrollcommand=self.vsbConsole.set, state=tk.DISABLED,
                                background="black", foreground="green", font=("Helvetica", "12"))
         self.console.tag_config('error', foreground="red",
                                 font=("Helvetica", "12", "bold"))
