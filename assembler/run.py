@@ -251,7 +251,7 @@ def compile_code(lines, debug):
                 instructionAddress, instructionTuple[1], debugLines, instructionNum, instructions)
         except ValueError:
             isFailed = True
-            print("Error in line: {}, code instruction: {}".format(
+            print("Error in line: {} with instruction: {}".format(
                 instructionTuple[0]+1, instructionTuple[1]))
             # sys.exit()
     debug.writelines(
@@ -267,7 +267,10 @@ def compile_code(lines, debug):
     # check if there is a Syntax Error:
     # (address in decimal, instruction code)
     if(isFailed):
+        print("Failed Compile")
         return False
+
+    print("Successful Compile")
     memoryTuples = [(x[-2], x[-1]) for x in debugLines]
     return memoryTuples
 
