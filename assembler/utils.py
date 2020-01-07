@@ -1,7 +1,7 @@
+from assembler import generate_empty_memory
 from tkinter import filedialog, messagebox
 import tkinter as tk
 import os
-from run import generate_empty_memory
 
 
 class PrintLogger():  # create file like object
