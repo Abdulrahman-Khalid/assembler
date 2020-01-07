@@ -8,7 +8,7 @@ $ cd assembler/
 ``` bash
 $ python run.py
 ```
-3. Write your assembly program
+3. Write your assembly program or open it from file menu
 4. Choose your RAM File (if you don't have any, Generate one from options menu)
 5. Compile and run your code from Run Menu
 6. Put your RAM File outside work directory if you are using model sim it will be loaded automatically
