@@ -31,6 +31,7 @@ def over_write_memory(memoryTuples, ramFilePath):
         print("Successful Run")
     else:
         print("Failed Run")
+    outputMemFile.close()
 
 
 def generate_empty_memory(memFile):
