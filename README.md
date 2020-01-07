@@ -14,9 +14,11 @@ $ python run.py
 6. Put your RAM File outside work directory if you are using model sim it will be loaded automatically
 7. Run Main.vhd on model sim and get your program result
 
+### Compile and run Results:
 ![](/Readme_Imgs/Success.png) 
 ![](/Readme_Imgs/Failed.png) 
-Menu Options:
+
+### Menu Options:
 ![](/Readme_Imgs/File_Menu.png) 
 ![](/Readme_Imgs/Run_Menu.png) 
 ![](/Readme_Imgs/Options_Menu.png) 
